@@ -3,7 +3,8 @@ const path = require('path'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
-    exampleRouter = require('../routes/examples.server.routes');
+    accountRoute = require('../routes/accountRoute'),
+    cors = require("cors");
 
 module.exports.init = () => {
     /* 
@@ -12,9 +13,12 @@ module.exports.init = () => {
     */
     mongoose.connect(process.env.DB_URI || require('./config').db.uri, {
         useNewUrlParser: true
-    });
+    }).then((success) => console.log("Database connected successfully"))
+    .catch((error) => console.log("error connecting to database", error));
+    
     mongoose.set('useCreateIndex', true);
     mongoose.set('useFindAndModify', false);
+    mongoose.set('useUnifiedTopology', true);
 
     // initialize app
     const app = express();
@@ -22,11 +26,13 @@ module.exports.init = () => {
     // enable request logging for development debugging
     app.use(morgan('dev'));
 
+    app.use(cors());
+
     // body parsing middleware
     app.use(bodyParser.json());
 
     // add a router
-    app.use('/api/example', exampleRouter);
+    app.use('/api', accountRoute);
 
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
