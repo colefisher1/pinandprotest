@@ -11,7 +11,7 @@ module.exports.init = () => {
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI || require('./config').db.uri, {
+    mongoose.connect(process.env.DB_URI || require('./config.js').db.uri, {
         useNewUrlParser: true
     }).then((success) => console.log("Database connected successfully"))
     .catch((error) => console.log("error connecting to database", error));
