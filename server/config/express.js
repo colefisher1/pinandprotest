@@ -11,15 +11,13 @@ module.exports.init = () => {
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI || require('./config.js').db.uri, {
+    mongoose.connect(process.env.DB_URI || require('./config').db.uri, {
         useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true
     }).then((success) => console.log("Database connected successfully"))
     .catch((error) => console.log("error connecting to database", error));
     
-    //mongoose.set('useCreateIndex', true);
-    //mongoose.set('useFindAndModify', false);
+    mongoose.set('useCreateIndex', true);
+    mongoose.set('useFindAndModify', false);
     //mongoose.set('useUnifiedTopology', true);
 
     // initialize app
@@ -48,4 +46,3 @@ module.exports.init = () => {
 
     return app
 }
-
