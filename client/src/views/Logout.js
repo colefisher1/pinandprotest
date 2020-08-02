@@ -8,7 +8,7 @@ const Logout = (props) => {
     props.setLoggedIn(false);
     
     return (
-        <Redirect from="/logout" to="/" />
+        <Redirect from="/logout" to="/"/>
     )
     
 }

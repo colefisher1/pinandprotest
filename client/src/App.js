@@ -31,6 +31,7 @@ const App = (props) => {
   if (loggedIn === false) {
     return (
       <React.Fragment>
+        <Router>
           <Switch>
             <div className="row no-gutters">
               <div className="col">
@@ -86,6 +87,7 @@ const App = (props) => {
               </div>
             </div>
           </Switch>
+        </Router>
       </React.Fragment>
     );
   }

@@ -15,7 +15,7 @@ import Logout from "../Logout";
 
 //Import other components
 import { NavigationBar } from "../NavBar";
-import  Layout  from "../Layout";
+import { Layout } from "../Layout";
 
 const HomePage = (props) => {
   const setLoggedIn = props.setLoggedIn;
