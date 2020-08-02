@@ -16,10 +16,12 @@ const Post = (props) => {
 
     let replyingTo = props.post.id;
 
+    const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
+
     function submitPost(event) {
         event.preventDefault();
 
-        fetch("http://localhost:5000/api/reports", {
+        fetch(`${domain}/api/reports`, {
             method: "POST",
             headers: {
               "content-type": "application/json",

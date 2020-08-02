@@ -32,8 +32,10 @@ const ProtestMap = () => {
     popupAnchor: [1, -34],
   });
 
+  const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
+
   useEffect(() => {
-    fetch("http://localhost:5000/api/protests", {
+    fetch(`${domain}/api/protests`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -71,7 +73,7 @@ const ProtestMap = () => {
       token
     };
 
-    fetch("http://localhost:5000/api/protest", {
+    fetch(`${domain}/api/protest`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -107,7 +109,7 @@ const ProtestMap = () => {
 
 
   const handleDeleteProtest = (protestId) => {
-    const route = "http://localhost:5000/api/protest/" + protestId;
+    const route = `${domain}/api/protest/${protestId}`;
     const token = localStorage.getItem("token");
     console.log("token", token);
     fetch(route, {

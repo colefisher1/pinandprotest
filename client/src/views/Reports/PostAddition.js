@@ -11,13 +11,15 @@ const PostAddition = (props) => {
   
     //state that will be changing based on the user input
     const [userPost, setUserPost] = useState("");
+
+    const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
    
     //posts a comment
     function submitPost(event) {
         event.preventDefault();
         
         //to get the logged in username
-        fetch("http://localhost:5000/api/reports", {
+        fetch(`${domain}/api/reports`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

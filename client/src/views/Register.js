@@ -25,11 +25,14 @@ const Register = () => {
     newAccount.confirmPassword = confirmPassword;
 
     const isValid = validateForm(event);
+
+    const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
+    
     if (isValid) {
       resetFormValues();
       //Add an id to newAccount here as well
       //Do something with the newAccount object
-      fetch("http://localhost:5000/api/register", {
+      fetch(`${domain}/api/register`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
