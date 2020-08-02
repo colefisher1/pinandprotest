@@ -17,11 +17,14 @@ const Login = (props) => {
     accountCredentials.password = password;
 
     const isValid = validateForm(event);
+
+    const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
+
     if (isValid) {
       resetFormValues();
       //Do something with credentials object
 
-      fetch("http://localhost:5000/api/login", {
+      fetch(`${domain}/api/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
