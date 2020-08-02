@@ -2,11 +2,11 @@ import React, {useState, useEffect} from "react";
 
 const News = () => {
     const [articles, setArticles] = useState([]);
-
+    const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
     //Fetches data from News API after the page is rendered
     useEffect(() => {
         //Currently fetching top-headlines in english with the keyword protest
-        fetch('http://newsapi.org/v2/top-headlines?q=protest&language=en&apiKey=cfd93ac9295b4ee88d834e9034b6dc9d')
+        fetch(`${domain}/api/protest`)
         .then(response => {
             return response.json();
         })
