@@ -29,6 +29,8 @@ const News = () => {
         const articlesArr = articles.map(article => 
             <div class="row mx-auto newsarticle"  onClick={(event) => {event.preventDefault(); window.open(`${article.website}`);}}>
                 <div class="col my-auto">
+                <div class="spacer"></div>
+                <div class="spacer"></div>
                     <h4>{article.title}</h4>
                     <h2 class="author_date">{article.source} - {article.date.replace(/T(.*)/g, '')}</h2>
                     <p class="description">{article.description}</p>
