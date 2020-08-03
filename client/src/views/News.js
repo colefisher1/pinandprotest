@@ -28,9 +28,6 @@ const News = () => {
     if (articles && articles.length > 0) {
         const articlesArr = articles.map(article => 
             <div class="row mx-auto newsarticle"  onClick={(event) => {event.preventDefault(); window.open(`${article.website}`);}}>
-                <div class="d-none d-lg-block col-sm-2 my-auto">
-                    <img class="articleimage" src={article.image} />
-                </div>
                 <div class="col my-auto">
                     <h4>{article.title}</h4>
                     <h2 class="author_date">{article.source} - {article.date.replace(/T(.*)/g, '')}</h2>
