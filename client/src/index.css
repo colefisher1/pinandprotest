@@ -1,0 +1,286 @@
+body {
+    margin: auto;
+    font-family: 'Abhaya Libre', serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; 
+  }
+  
+  code {
+    font-family: 'Abhaya Libre', serif;
+  }
+  
+  /* Styling for Navbar */
+  .color-nav {
+    background-color: white;
+    font-family: 'Abhaya Libre', serif;
+  }
+  .brand-nav {
+    border-bottom: 3px solid #BEE3f2;
+    font-family: 'Abhaya Libre', serif;
+    font-weight: bolder;
+  }
+  .nav-link:hover {
+    border-bottom: 3px solid #BEE3f2;
+  }
+  
+  
+  .form-div {
+    width: 100%;
+    max-width: 330px;
+    padding: 40px;
+    margin: auto;
+    background-color: white;
+    font-family: 'Abhaya Libre', serif;
+    box-shadow:10px 10px 5px grey;
+    border-radius: 10px;
+  }
+  
+  /*Columns in Login, Register, ForgotPassword Pages*/
+  .leftside{
+    height: 100vh;
+    position: relative;
+    padding: 20px;
+    background: white;
+    width: 50vw;
+  }
+  
+  .rightside{
+    height: 100vh;
+    font-family: 'Abhaya Libre', serif;
+    background: #bee3f2;
+    width: 50vw;
+  }
+  
+  /* Info that shows on left side of main page */
+  .app-info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Abhaya Libre', serif;
+    font-weight: bolder;
+  }
+  
+  /* #BlackLivesMatter */
+  .black-lives {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-shadow:4px 4px 4px grey;
+  }
+  
+  /* ------------------------- Map page -------------------------*/
+  
+  /* Styling for leaflet container/map */
+  .leaflet-container {
+    height: 100%;
+    position: relative;
+  }
+  .mapbox {
+    position: relative;
+    width: 100%;
+  }
+  
+  /*Used to help with vertical spacing*/
+  .halfspacer {
+    height: 5px;
+  }
+  .spacer {
+    height:10px;
+  }
+  
+  /*Styling for taskbar overlay */
+  .taskbar {
+    background-color: rgba(255, 255, 255, 0.925);
+    border: 1px solid black;
+    min-height: 50px;
+    left: 0;
+    right: 0;
+    top: 85px;
+    width: 85%;
+    max-width: 800px;
+    position: absolute;
+    z-index: 314159;
+    pointer-events:initial;
+    font-size: 12px;
+  }
+  
+  /* Styling for add/delete protest buttons */
+  .btn{
+    background-color: #BEE3f2;
+    font-weight: bold;
+    font-family: 'Abhaya Libre', serif;
+  }
+  
+  .rounded-pill .blue {
+    background-color: #BEE3f2;
+  }
+  
+  /*Styling for protest filter/checkboxes */
+  .protestlabel {
+    font-weight: bold;
+    font-family: 'Abhaya Libre', serif;
+  }
+  .checkbox-round {
+    width: 1.3em;
+    height: 1.3em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .peaceful:checked {
+    background-color: green;
+  }
+  .nonpeaceful:checked {
+    background-color: red;
+  }
+  .form-check-label {
+    padding-left: 10px;
+    font-family: 'Abhaya Libre', serif;
+  }
+  
+  /* ------------------------- News Feed page -------------------------*/
+  .newsarticle {
+    border: 8px solid #BEE3f2;
+    border-radius: 25px;
+    min-height: 150px; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    width: 90%;
+    max-width: 1000px;
+    position: relative;
+    transition: ease-in-out box-shadow .2s;
+  }
+  .newsarticle:hover {
+    box-shadow: 5px 5px 5px grey;
+    cursor: pointer;
+  }
+  .articleimage {
+    width: 120px;
+    height: 120px;
+  }
+  .author_date {
+    font-size: 14px;
+    font-style: italic;
+  }
+  .description {
+    font-size: 12px;
+  }
+  
+  /*----------------------------- Reports --------------------------- */
+  .post-editor {
+    margin: 1em 20%;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 18px;
+  }
+  .post-button, .save-button {
+    float: right;
+    margin-top: 1em;
+    border-radius: 3.5px;
+    background-color: #BEE3f2;
+    font-weight: 500;
+    border-color: #BEE3f2;
+    padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+  }
+  
+  .disabledpost-button {
+    float: right;
+    margin-top: 1em;
+    border-radius: 3.5px;
+    background-color: #BEE3f2;
+    font-weight: 500;
+    border-color: #BEE3f2;
+    padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+  }
+  
+  .post-button:hover, .thread-button:hover{
+    background-color: #a0d9f0;
+  }
+  .post-component {
+    margin: 1em 20%;
+  }
+  
+  .Footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 7%;
+    color: rgb(7, 5, 5);
+    text-align: center;
+  }
+  
+  .thread-button{
+    position: relative;
+    float: left;
+    left: 10%;
+    top: 15%;
+    border-radius: 3.5px;
+    background-color: #BEE3f2;
+    font-weight: 500;
+    border-color: #BEE3f2;
+    padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+  }
+  
+  .reply-button, .like-button, .dislike-button, .edit-button, .delete-button {
+    user-select: none;
+    margin-right: 20px;
+    color: grey;
+  }
+  
+  .reply-button:hover, .like-button:hover, .dislike-button:hover, .edit-button:hover, .delete-button:hover {
+    cursor: pointer;
+    color: black;
+  }
+  
+  .post-date {
+   margin-left: auto;
+  }
+  
+  .replies {
+    margin-left: 100px;
+  }
+  
+  .comment-container {
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 8px;
+  }
+  
+  .buttons {
+    display: inline-flex;
+    flex-direction: row;
+    margin: 5px;
+    color: grey;
+  }
+  
+  .namedate-container {
+    display: inline-flex;
+    flex-direction: row;
+  }
+  
+  .edit-button {
+    margin-left: auto;
+  }
+  
+  .reply-button1 {
+    user-select: none;
+    float: right;
+    color: grey;
+  }
+  
+  .reply-button1:hover {
+    cursor: pointer;
+    color: black;
+  }
