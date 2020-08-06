@@ -51,11 +51,14 @@ exports.createProtest = async (req, res) => {
       coordinates: {
         lat: req.body.coordinates.lat,
         long: req.body.coordinates.long,
-      },
+      }
     });
 
     if (pin._id) {
       pin.save();
+      Account.findOneAndUpdate({_id: decoded._id}, { $push: {pins: [pin._id]} }, (err, doc, res)=> {
+        console.log(doc);
+      })
       res.status(200).send(pin);
     } else {
       res.sendStatus(500);
@@ -70,7 +73,7 @@ exports.getAllProtests = async (req, res) => {
     const pins = await Pin.find({});
     res.send(pins);
   } catch (e) {
-    console.log("gett all protess error", e);
+    console.log("getAllProtests error", e);
   }
 };
 
@@ -90,3 +93,23 @@ exports.deleteProtest = async (req, res) => {
     console.log("error delete protest", e);
   }
 };
+
+exports.displayAccount = async (req, res) => {
+  
+  const decodedToken = jwt.decode(req.body.token, jwtKey);
+
+  Account.findOne({_id: decodedToken._id}, (err, user) => {
+    if (err) throw err;
+    
+    const pinPromises = [];
+
+    user.pins.forEach(pin => {
+      const promise = Pin.findOne({_id: pin}).exec();
+      pinPromises.push(promise);
+    });
+
+    Promise.all(pinPromises)
+      .then((pins) => res.send(pins));
+  })
+
+}

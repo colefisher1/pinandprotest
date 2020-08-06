@@ -6,7 +6,8 @@ const {
   createProtest,
   getAllProtests,
   deleteProtest,
-  reports
+  reports,
+  displayAccount
 } = require("../controllers/accountController");
 
 router.route('/register').post(register);
@@ -15,5 +16,6 @@ router.route('/reports').post(reports);
 router.route('/protest').post(createProtest);
 router.route('/protests').get(getAllProtests);
 router.route('/protest/:protestId').delete(deleteProtest);
+router.route('/account').put(displayAccount);
 
 module.exports = router;
