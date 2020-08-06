@@ -32,7 +32,7 @@ const News = () => {
                 <div class="spacer"></div>
                 <div class="spacer"></div>
                     <h4>{article.title}</h4>
-                    <h2 class="author_date">{article.source} - {article.date.replace(/T(.*)/g, '')}</h2>
+                    <h2 class="author_date">{article.source} - {article.date}</h2>
                     <p class="description">{article.description}</p>
                 </div>
             </div>
