@@ -97,7 +97,7 @@ body {
     right: 0;
     top: 85px;
     width: 85%;
-    max-width: 800px;
+    max-width: 500px;
     position: absolute;
     z-index: 314159;
     pointer-events:initial;

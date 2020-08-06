@@ -62,10 +62,11 @@ const ProtestMap = () => {
     const token = localStorage.getItem("token");
 
     console.log("peaceful", peaceful);
-
+    
+    console.log(protestAddress);
     const newProtest = {
       peaceful,
-      protestAddress,
+      protestAddress: protestAddress,
       coordinates: {
         lat: creatingProtest.lat,
         long: creatingProtest.lng,
@@ -88,6 +89,8 @@ const ProtestMap = () => {
         setCreatingProtest(null);
         setProtestList([...protestList, data]);
       });
+
+    
   };
 
   const createProtest = (e) => {
@@ -95,6 +98,22 @@ const ProtestMap = () => {
     setAddProtestBox(false);
     setCreatingProtest(e.latlng);
     setAddProtestBox(true);
+    
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+    fetch(`${proxyUrl}http://open.mapquestapi.com/geocoding/v1/reverse?key=p3ngfpqJsUmii1sppAGgAAe9YgCdqoHY
+    &location=${e.latlng.lat},${e.latlng.lng}`)
+      .then(response => {
+          return response.json();
+      })
+      .then(data => {
+          //Store fetched data into an array and set state
+          console.log(data);
+          let street = data.results[0].locations[0].street;
+          let city = data.results[0].locations[0].adminArea5;
+          let state = data.results[0].locations[0].adminArea3;
+          setProtestAddress(`${street},${city},${state}`);
+      });
+    
   };
 
   const handleFilter = (type) => {
@@ -132,7 +151,7 @@ const ProtestMap = () => {
   const renderCreateProtest = () => {
     const locationClone = { ...creatingProtest };
     const popupLocation = {
-      lat: locationClone.lat + 0.04,
+      lat: locationClone.lat,
       lng: locationClone.lng,
     };
     return (
@@ -217,11 +236,8 @@ const renderFilteredList = () => {
       <div class="spacer2"></div>
       <div class="row taskbar rounded-pill mx-auto">
           <div class="col-1"></div>
-          <div class="col">
-            
-            <div class="spacer"></div>
-            <div class="halfspacer"></div>
-            <div class="row">
+          <div class="col my-auto">
+            <div class="row mx-auto">
               <label class="protestlabel">Filter by Protest Type:</label>
               <form onClick={(e) => e.stopPropagation()} action="">
                 <div class="form-check">
@@ -248,20 +264,8 @@ const renderFilteredList = () => {
                     Non-peaceful
                   </label>
                 </div>
-                </form>
+              </form>
             </div>
-            </div>
-          <div class="col-3">
-            <div class="halfspacer"></div>
-            <button type="button" class="btn btn-block rounded-pill blue">
-              Add Protest{" "}
-            </button>
-          </div>
-          <div class="col-3">
-            <div class="halfspacer"></div>
-            <button type="button" class="btn btn-block rounded-pill blue">
-              Delete Protest
-            </button>
           </div>
         </div>
       <Map
