@@ -73,7 +73,7 @@ exports.getAllProtests = async (req, res) => {
     const pins = await Pin.find({});
     res.send(pins);
   } catch (e) {
-    console.log("gett all protess error", e);
+    console.log("getAllProtests error", e);
   }
 };
 
@@ -100,11 +100,16 @@ exports.displayAccount = async (req, res) => {
 
   Account.findOne({_id: decodedToken._id}, (err, user) => {
     if (err) throw err;
+    
+    const pinPromises = [];
 
-    const pins = user.pins;
-    const threads = user.comments;
-    const comments = user.threads;
-    res.send({pins, threads, comments})
+    user.pins.forEach(pin => {
+      const promise = Pin.findOne({_id: pin}).exec();
+      pinPromises.push(promise);
+    });
+
+    Promise.all(pinPromises)
+      .then((pins) => res.send(pins));
   })
 
 }
