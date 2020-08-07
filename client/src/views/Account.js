@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
+import ProtestMap from "./Map";
 
 const Account = () => {
     const [pins, setPins] = useState([]);
@@ -29,11 +31,11 @@ const Account = () => {
       const pinsArr = pins.map(pin => 
           <div class="row mx-auto newsarticle">
               <div class="col my-auto">
-                  <h3>Address</h3>
+                  <h3>{pin.address}</h3>
                   <p>
-                  <b>Peaceful: </b>{pin.isViolent.toString()} <br/>
-                  <b>Latitude: </b>{pin.coordinates.lat} <br/>
-                  <b>Longitude: </b>{pin.coordinates.long}
+                    <b>Peaceful: </b>{`${pin.isViolent === true ? "No" : "Yes"}`} <br/>
+                    <b>Latitude: </b>{pin.coordinates.lat} <br/>
+                    <b>Longitude: </b>{pin.coordinates.long}
                   </p> 
               
                   <div className="delete-button bottom-corner">

@@ -7,7 +7,7 @@ import L from 'leaflet';
 
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
-const position = [27.6648, -81.5158];
+const florida = [27.6648, -81.5158];
 
 const ProtestMap = () => {
   const [addProtestBox, setAddProtestBox] = useState(false);
@@ -17,8 +17,7 @@ const ProtestMap = () => {
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
-
-
+  
   const greenPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
     iconSize: [25, 41],
