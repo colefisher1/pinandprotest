@@ -75,6 +75,7 @@ const ProtestMap = () => {
       token
     };
 
+    console.log(newProtest);
     fetch(`${domain}/api/protest`, {
       method: "POST",
       headers: {
@@ -90,8 +91,7 @@ const ProtestMap = () => {
         setCreatingProtest(null);
         setProtestList([...protestList, data]);
       });
-
-    
+      console.log(newProtest);
   };
 
   const createProtest = (e) => {
@@ -112,7 +112,7 @@ const ProtestMap = () => {
           let street = data.results[0].locations[0].street;
           let city = data.results[0].locations[0].adminArea5;
           let state = data.results[0].locations[0].adminArea3;
-          setProtestAddress(`${street},${city},${state}`);
+          setProtestAddress(data.results[0].locations[0]);
       });
     
   };
