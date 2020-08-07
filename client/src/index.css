@@ -284,3 +284,14 @@ body {
     cursor: pointer;
     color: black;
   }
+
+  /* ----- Account Page ----- */
+  .acct_heading {
+    text-align: center;
+  }
+
+  .bottom-corner {
+    position: absolute;
+    bottom:0;
+    right:0;
+  }
