@@ -1,4 +1,4 @@
-    import React, {useState} from 'react';
+import React, {useState} from 'react';
 import Form from "react-bootstrap/Form";
 
 const EditDelete = (props) =>{
@@ -23,18 +23,43 @@ const EditDelete = (props) =>{
         setChangeContent("");
     }
 
-    //if delete button is clicked
-    const onDeleteClick = (event) => {
-        event.preventDefault();
-     
+    const deletePost = (passedPost) => {
+        
+        passedPost.replies.forEach((reply) => deletePost(reply));
+
+        passedPost.replies = [];
+
         props.posts.map(post => {
-            if(post.id === props.postId){
+            if(post.id === passedPost.id) {
                 const tempoPosts = props.posts;
                 tempoPosts.splice(props.posts.indexOf(post), 1);
                 props.setPosts([...tempoPosts]);
             }
         })
+    };
+
+    //if delete button is clicked
+    const onDeleteClick = (event) => {
+        event.preventDefault();
+
+        props.posts.map(post => {
+            if(post.id === props.postId){
+                props.posts.forEach(parent => {
+                    if (parent.id === post.replyingTo) {
+                        parent.replies.forEach((reply, i) => {
+                            if(reply.id === post.id)
+                                parent.replies.splice(i, 1);
+                        })
+                    }
+                })
+                deletePost(props.posts[props.posts.indexOf(post)]);
+            }
+        })
+
+        console.log("new array after deletion: ",props.posts);
     }
+
+
 
     //what happens when edit button is clicked
     const editing = props.posts.map(post => {
