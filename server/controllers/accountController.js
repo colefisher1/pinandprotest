@@ -1,5 +1,6 @@
 const { Account } = require("../models/accountModel");
 const { Pin } = require("../models/pinModel");
+const { Comment } = require('../models/commentModel');
 
 const jwt = require("jsonwebtoken");
 const jwtKey = require("./jwtKey");
@@ -33,12 +34,42 @@ exports.login = async (req, res) => {
   }
 };  
 
-exports.reports = async (req, res) => {
+exports.saveComments = async (req, res) => {
   const token = req.body.usernameToken;
+  const post = req.body.post;
 
   const decodedToken = jwt.decode(token, jwtKey);
 
-  res.json({username: decodedToken.username});
+  console.log('post',post);
+
+  console.log(decodedToken);
+
+  const comment = new Comment({
+    user: decodedToken._id,
+    username: decodedToken.username,
+    content: post
+  })
+
+  const commentID = comment._id;
+
+  comment.save();
+
+  res.json({
+    username: decodedToken.username,
+    user: decodedToken._id,
+    commentID,
+    date: comment.date
+  });
+} 
+
+exports.displayComments = async (req, res) => {
+  const comments = Comment.find({}, (err, fetchedComments) => {
+    if(err) throw err;
+
+    console.log(fetchedComments);
+    res.send(fetchedComments);
+  });
+
 } 
 
 exports.createProtest = async (req, res) => {

@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 
 const Post = (props) => {
-    const usernameToken = localStorage.getItem('token'); 
     //const [userName, setUserName] = useState("");
     const [showPostForm, setShowPostForm] = useState(false);
     const [likes, setLikes] = useState(0);
@@ -14,27 +13,15 @@ const Post = (props) => {
     const [dislikeClick, setDislikeClick] = useState(false);
     const [userReply, setUserReply ] = useState("");
 
-    let replyingTo = props.post.id;
+    let replyingTo = props.post._id;
 
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
 
     function submitPost(event) {
         event.preventDefault();
 
-        fetch(`${domain}/api/reports`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({usernameToken: usernameToken}),
-          })
-            .then((res) => res.json())
-            .then((data) => data.username)
-            .then( (username) => {
-                    props.addPost(userReply, username, replyingTo);
-                }
-            );
-        //call method that sets the postContent of a post to the value of the user input
+        props.addPost(userReply, replyingTo);
+        //call method that sets the content of a post to the value of the user input
         //clear userPost
         //setUserName("");
         setUserReply("");
@@ -86,7 +73,7 @@ const Post = (props) => {
                 <div className="namedate-container">
                     <div className="user-name">
                         <i class="far fa-user" style={{marginRight: "5px"}}></i>
-                        {props.post.userName}
+                        {props.post.username}
                     </div>
                     {/*Component to render how much time ago a comment was posted*/}
                     <div className="post-date">
@@ -97,7 +84,7 @@ const Post = (props) => {
                 {/* </Card.Header> */}
                 <Card.Body>
                      {/*Renders post content*/}
-                    {props.post.postContent}
+                    {props.post.content}
                 </Card.Body>
                 <div className="buttons">
                 
@@ -121,7 +108,7 @@ const Post = (props) => {
                     </div>
                 
                     {/*this functionality (editing and deleting posts) should only be available to the comments created by the current user */}
-                    <EditDelete posts={props.posts} postContent={props.post.postContent} postId={props.post.id} setPosts={props.setPosts} addPost={props.addPost}/>
+                    <EditDelete posts={props.posts} content={props.post.content} postId={props.post._id} setPosts={props.setPosts} addPost={props.addPost}/>
                 </div>
             </Card>
             <br></br>
@@ -136,7 +123,7 @@ const Post = (props) => {
                                     value={userReply} 
                                     onChange={(e) => setUserReply(e.target.value)} 
                                     className="form-control"
-                                    placeholder={"Replying to @"+props.post.userName}
+                                    placeholder={"Replying to @"+props.post.username}
                                 >
                                 </textarea>
                                 {userReply.trim() && <span style={{marginTop: "5px"}} className="reply-button1" onClick={submitPost} >

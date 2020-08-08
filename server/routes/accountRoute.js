@@ -6,13 +6,15 @@ const {
   createProtest,
   getAllProtests,
   deleteProtest,
-  reports,
+  saveComments,
+  displayComments,
   displayAccount
 } = require("../controllers/accountController");
 
 router.route('/register').post(register);
 router.route('/login').post(login);
-router.route('/reports').post(reports);
+router.route('/reports').post(saveComments);
+router.route('/reports').get(displayComments);
 router.route('/protest').post(createProtest);
 router.route('/protests').get(getAllProtests);
 router.route('/protest/:protestId').delete(deleteProtest);

@@ -7,6 +7,19 @@ const commentSchema = mongoose.Schema({
     ref: 'account',
     required: true
   },
+  username: {
+    type: String,
+    required: true
+  },
+  replyingToID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'account',
+    default: null
+  },
+  replyingTo: {
+    type: String,
+    default: null
+  },
   content: {
     type: String,
     required: true
