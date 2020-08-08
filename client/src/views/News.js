@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 const News = () => {
     const [articles, setArticles] = useState([]);
-    
+    localStorage.removeItem("map_location");
     //Fetches data from News API after the page is rendered
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"
     useEffect(() => {

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 import ProtestMap from "./Map";
+import { propTypes } from "react-bootstrap/esm/Image";
 
-const Account = () => {
+const Account = (props) => {
     const [pins, setPins] = useState([]);
+    localStorage.removeItem("map_location");
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
-
+    const createHistory = require("history").createBrowserHistory;
     const token = localStorage.getItem("token");
     console.log(token);
     useEffect(() => {
@@ -23,13 +25,26 @@ const Account = () => {
             })
     }, []);
     
+    
+    
+    const goToPin = (coordinates) => {
+      //props.setUserLocation([coordinates.lat, coordinates.long]);
+      localStorage.setItem("map_location", JSON.stringify(coordinates));
+      let history = createHistory();
+      history.push("/map");
+      let pathUrl = window.location.href;
+      window.location.href = pathUrl;
+    }
+
     const onDeleteClick = (event) => {
       event.preventDefault();
       //Remove pin from db here
     }
+
+    console.log(pins);
     if (pins && pins.length > 0) {
       const pinsArr = pins.map(pin => 
-          <div class="row mx-auto newsarticle">
+          <div class="row mx-auto newsarticle" onClick={(e) => goToPin(pin.coordinates)}>
               <div class="col my-auto">
                   <h3>{pin.address}</h3>
                   <p>
@@ -37,11 +52,6 @@ const Account = () => {
                     <b>Latitude: </b>{pin.coordinates.lat} <br/>
                     <b>Longitude: </b>{pin.coordinates.long}
                   </p> 
-              
-                  <div className="delete-button bottom-corner">
-                    <i class="far fa-trash-alt" style={{marginRight: "5px"}}></i>
-                    <span onClick={onDeleteClick}>Delete</span>
-                  </div>
               </div>
           </div>
       );

@@ -9,15 +9,32 @@ import L from 'leaflet';
 //we need to change this so the user's selected state is loaded in from his/her account schema
 const florida = [27.6648, -81.5158];
 
-const ProtestMap = () => {
+const ProtestMap = (props) => {
+  
   const [addProtestBox, setAddProtestBox] = useState(false);
   const [peaceful, setPeaceful] = useState(true);
   const [protestAddress, setProtestAddress] = useState("");
-  const [userLocation, setUserLocation] = useState([27.6648, -81.5158]);
+  //const [userLocation, setUserLocation] = useState(props.userLocation);
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
   
+  
+  console.log(localStorage.getItem("map_location"));
+
+  let locationData, location, zoomConstant;
+  if(localStorage.getItem("map_location")) {
+    locationData = JSON.parse(localStorage.getItem("map_location"));
+    location = [locationData.lat, locationData.long];
+    zoomConstant = 18;
+  }
+  else {
+    location = florida;
+    zoomConstant = 7;
+  }
+  const [userLocation, setUserLocation] = useState(location);
+  const [zoomAmount, setZoomAmount] = useState(zoomConstant);
+
   const greenPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
     iconSize: [25, 41],
@@ -92,6 +109,7 @@ const ProtestMap = () => {
   };
 
   const createProtest = (e) => {
+    localStorage.removeItem("map_location");
     setCreatingProtest(null);
     setAddProtestBox(false);
     setCreatingProtest(e.latlng);
@@ -127,6 +145,7 @@ const ProtestMap = () => {
 
 
   const handleDeleteProtest = (protestId) => {
+    localStorage.removeItem("map_location");
     const route = `${domain}/api/protest/${protestId}`;
     const token = localStorage.getItem("token");
     console.log("token", token);
@@ -271,7 +290,7 @@ const renderFilteredList = () => {
         onClick={createProtest}
         class="container mapbox"
         center={userLocation}
-        zoom={7}
+        zoom={zoomAmount}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
