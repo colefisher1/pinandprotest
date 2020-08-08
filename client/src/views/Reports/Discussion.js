@@ -8,7 +8,7 @@ const Discussion = () => {
     const [posts, setPosts] = useState([]);
 
     //passing user post content
-    function addPost(post, username, something) {
+    function addPost(post, username, parentCommentId, isThread, nameOfThread) {
         //console.log("this post Content from POdt addition: " + post);
 
         //push post to posts array
@@ -16,16 +16,21 @@ const Discussion = () => {
         
         const newPost = {
             id: previousPosts.length + 1, 
+            isThread: isThread,
+            thread: {
+                name: nameOfThread,
+                  //eventually pass in pin, not sure how that would work, ask for pin link when creating thread maybe
+            },
             postContent: post, 
             userName: username, 
-            replyingTo: something, 
-            replies: [] 
+            replyingTo: parentCommentId, 
+            replies: []
         }
         //dont really want to push a post this way, change code to deal with database
         previousPosts.push(newPost);
 
         previousPosts.forEach((post) => {
-            if(post.id === something)
+            if(post.id === parentCommentId)
                 post.replies.push(newPost);
         })
 

@@ -11,6 +11,26 @@ import Guidelines from "./Guidelines";
 const position = [27.6648, -81.5158];
 
 const ProtestMap = (props) => {
+
+  //const [visited, setVisited] = useState(false);
+  const [viewGuide, setViewGuide] = useState(false);
+  const [show, setShow] = useState(true);
+  
+  useEffect(() => {
+    const popupModalValue = localStorage.getItem("popupModal");
+    console.log("I got here, I am tired " + popupModalValue);
+    if (!popupModalValue) {
+      const timer = setTimeout(() => {
+        localStorage.setItem("popupModal", "bla");
+        setViewGuide(true);
+        console.log("I got here, I am tiredddddddd");
+      }, 2000);
+  
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+
   const [addProtestBox, setAddProtestBox] = useState(false);
   const [peaceful, setPeaceful] = useState(true);
   const [protestAddress, setProtestAddress] = useState("");
@@ -18,7 +38,13 @@ const ProtestMap = (props) => {
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
+  const [currentUsername, setCurrentUsername] = useState("");
+  const [protestInfo, setProtestInfo] = useState("");
 
+
+  const usernameToken = localStorage.getItem("token");
+  //console.log("usernameToken: "+usernameToken);
+  //let currentUsername = "";
 
   const greenPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
@@ -49,6 +75,22 @@ const ProtestMap = (props) => {
       });
   }, []);
 
+ // useEffect(() => {
+    fetch(`${domain}/api/reports`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({usernameToken: usernameToken}),
+    })
+      .then((res) => res.json())
+      .then((data) => data._id)
+      .then( (id) => {
+              setCurrentUsername(id);
+          }
+      );
+ // }, []);
+
   //current location user
 
   //   useEffect(() => {
@@ -72,7 +114,8 @@ const ProtestMap = (props) => {
         lat: creatingProtest.lat,
         long: creatingProtest.lng,
       },
-      token
+      token,
+      protestInfo
     };
 
     fetch(`${domain}/api/protest`, {
@@ -86,6 +129,7 @@ const ProtestMap = (props) => {
       .then((data) => {
         setAddProtestBox(false);
         setProtestAddress("");
+        setProtestInfo("");
         setPeaceful(true);
         setCreatingProtest(null);
         setProtestList([...protestList, data]);
@@ -161,6 +205,12 @@ const ProtestMap = (props) => {
                 onChange={(e) => setPeaceful(false)}
               />
             </span>
+            <textarea
+              value={protestInfo} 
+              onChange={(e) => setProtestInfo(e.target.value)} 
+              placeholder="Info about protest, example: you need to wear masks to assist, # of protesters"
+            >
+            </textarea>
             <button onClick={handleAddProtest}>Submit</button>
           </div>
         </Popup>
@@ -190,9 +240,15 @@ const ProtestMap = (props) => {
     }
 };
 
+let count = 0;
+
 const renderFilteredList = () => {
   return filterProtests().map((protest) => {
-    console.log(protest.peaceful);
+    //I am comparing ids here, not sure if these ids should be displayed in frontend, (is it safe? or should I compare usernames?)
+    if(protest.user.toString() === currentUsername){
+      count = 1;
+    }
+    //console.log(protest.peaceful);
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -204,9 +260,10 @@ const renderFilteredList = () => {
               This protest is:{" "}
               {protest.isViolent ? "Not Peaceful" : "Peaceful"}
             </p>
-            <button onClick={() => handleDeleteProtest(protest._id)}>
+              {protest.protestInfo && <p>{protest.protestInfo}</p>}
+            {count==1 && <button onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
-            </button>
+            </button>}
           </span>
         </Popup>
       </Marker>
@@ -216,7 +273,7 @@ const renderFilteredList = () => {
 
   return (
     <div style={{ height: "100%" }}>
-      {/* {props.displayGuide && <Guidelines/>} */}
+      {viewGuide &&  <Guidelines show={show} setShow={setShow}/>}
       <div class="spacer2"></div>
       <div class="row taskbar rounded-pill mx-auto">
           <div class="col-1"></div>
