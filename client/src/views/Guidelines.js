@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Button, Modal, ModalDialog } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 
 const Guidelines = (props) => {
 
@@ -20,8 +20,6 @@ const Guidelines = (props) => {
             <br></br>
             <br></br>
             Leave rude, harassing, insulting, provocative, discriminating, non-tolerant, religious, racist, political, homophobic, or offensive comments and statements;
-            <br></br>
-            Post abusive, offensive, obscene, pornographic, infringing, sexually explicit materials (including links to such materials) prohibited under applicable law or regulations or that otherwise may be in conflict with this Agreement;
             <br></br>
             Advertise any product or service;
             <br></br>

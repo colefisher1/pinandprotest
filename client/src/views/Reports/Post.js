@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 
 const Post = (props) => {
     const usernameToken = localStorage.getItem('token'); 
-    //const [userName, setUserName] = useState("");
+    
     const [showPostForm, setShowPostForm] = useState(false);
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
@@ -34,9 +34,6 @@ const Post = (props) => {
                     props.addPost(userReply, username, replyingTo, false);
                 }
             );
-        //call method that sets the postContent of a post to the value of the user input
-        //clear userPost
-        //setUserName("");
         setUserReply("");
         setShowPostForm(!showPostForm);
     }

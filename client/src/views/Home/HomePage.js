@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     BrowserRouter as Router,
     Route,
@@ -7,7 +7,7 @@ import {
   } from "react-router-dom";
 
 //Import page components
-import Map from "../Map";
+import map from "../Map";
 import News from "../News";
 import Discussion from "../Reports/Discussion";
 import Account from "../Account";
@@ -19,7 +19,6 @@ import { Layout } from "../Layout";
 
 const HomePage = (props) => {
   const setLoggedIn = props.setLoggedIn;
-  const [displayGuide, setDisplayGuide] = useState(false);
 
   console.log("props", props);
 
@@ -29,12 +28,7 @@ const HomePage = (props) => {
         <Layout>
           <Router>
             <Switch>
-              <Route 
-                path="/map" exact 
-                render={(props) => (
-                  <Map {...props} displayGuide={displayGuide} setDisplayGuide={setDisplayGuide} setLoggedIn={setLoggedIn}/>
-                )}
-              />
+              <Route path="/map" exact component={map} />
               <Redirect exact from="/" to="/map"/>
               <Route path="/news" component={News} />
               <Route path="/reports" component={Discussion} />

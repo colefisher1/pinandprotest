@@ -3,33 +3,12 @@ import React, { useState, useEffect, Fragment } from "react";
 import {Map, Marker, Popup, TileLayer } from "react-leaflet";
 import LeafletSearch from "react-leaflet-search";
 import L from 'leaflet';
-import Guidelines from "./Guidelines";
-
 
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
 const position = [27.6648, -81.5158];
 
 const ProtestMap = (props) => {
-
-  //const [visited, setVisited] = useState(false);
-  const [viewGuide, setViewGuide] = useState(false);
-  const [show, setShow] = useState(true);
-  
-  useEffect(() => {
-    const popupModalValue = localStorage.getItem("popupModal");
-    console.log("I got here, I am tired " + popupModalValue);
-    if (!popupModalValue) {
-      const timer = setTimeout(() => {
-        localStorage.setItem("popupModal", "bla");
-        setViewGuide(true);
-        console.log("I got here, I am tiredddddddd");
-      }, 2000);
-  
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
 
   const [addProtestBox, setAddProtestBox] = useState(false);
   const [peaceful, setPeaceful] = useState(true);
@@ -38,13 +17,10 @@ const ProtestMap = (props) => {
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
-  const [currentUsername, setCurrentUsername] = useState("");
+  const [currentUserId, setCurrentUserId] = useState("");
   const [protestInfo, setProtestInfo] = useState("");
 
-
   const usernameToken = localStorage.getItem("token");
-  //console.log("usernameToken: "+usernameToken);
-  //let currentUsername = "";
 
   const greenPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
@@ -75,7 +51,7 @@ const ProtestMap = (props) => {
       });
   }, []);
 
- // useEffect(() => {
+    //fetch user id of current user
     fetch(`${domain}/api/reports`, {
       method: "POST",
       headers: {
@@ -86,10 +62,9 @@ const ProtestMap = (props) => {
       .then((res) => res.json())
       .then((data) => data._id)
       .then( (id) => {
-              setCurrentUsername(id);
+              setCurrentUserId(id);
           }
       );
- // }, []);
 
   //current location user
 
@@ -244,11 +219,9 @@ let count = 0;
 
 const renderFilteredList = () => {
   return filterProtests().map((protest) => {
-    //I am comparing ids here, not sure if these ids should be displayed in frontend, (is it safe? or should I compare usernames?)
-    if(protest.user.toString() === currentUsername){
+    if(protest.user.toString() === currentUserId){
       count = 1;
     }
-    //console.log(protest.peaceful);
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -273,7 +246,6 @@ const renderFilteredList = () => {
 
   return (
     <div style={{ height: "100%" }}>
-      {viewGuide &&  <Guidelines show={show} setShow={setShow}/>}
       <div class="spacer2"></div>
       <div class="row taskbar rounded-pill mx-auto">
           <div class="col-1"></div>

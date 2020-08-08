@@ -55,11 +55,7 @@ const EditDelete = (props) =>{
                 deletePost(props.posts[props.posts.indexOf(post)]);
             }
         })
-
-        console.log("new array after deletion: ",props.posts);
     }
-
-
 
     //what happens when edit button is clicked
     const editing = props.posts.map(post => {
