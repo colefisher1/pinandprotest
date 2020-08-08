@@ -4,12 +4,12 @@ import {Map, Marker, Popup, TileLayer } from "react-leaflet";
 import LeafletSearch from "react-leaflet-search";
 import L from 'leaflet';
 
-
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
 const position = [27.6648, -81.5158];
 
-const ProtestMap = () => {
+const ProtestMap = (props) => {
+
   const [addProtestBox, setAddProtestBox] = useState(false);
   const [peaceful, setPeaceful] = useState(true);
   const [protestAddress, setProtestAddress] = useState("");
@@ -17,7 +17,10 @@ const ProtestMap = () => {
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState("");
+  const [protestInfo, setProtestInfo] = useState("");
 
+  const usernameToken = localStorage.getItem("token");
 
   const greenPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
@@ -48,6 +51,21 @@ const ProtestMap = () => {
       });
   }, []);
 
+    //fetch user id of current user
+    fetch(`${domain}/api/reports`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({usernameToken: usernameToken}),
+    })
+      .then((res) => res.json())
+      .then((data) => data._id)
+      .then( (id) => {
+              setCurrentUserId(id);
+          }
+      );
+
   //current location user
 
   //   useEffect(() => {
@@ -71,7 +89,8 @@ const ProtestMap = () => {
         lat: creatingProtest.lat,
         long: creatingProtest.lng,
       },
-      token
+      token,
+      protestInfo
     };
 
     fetch(`${domain}/api/protest`, {
@@ -85,6 +104,7 @@ const ProtestMap = () => {
       .then((data) => {
         setAddProtestBox(false);
         setProtestAddress("");
+        setProtestInfo("");
         setPeaceful(true);
         setCreatingProtest(null);
         setProtestList([...protestList, data]);
@@ -160,6 +180,12 @@ const ProtestMap = () => {
                 onChange={(e) => setPeaceful(false)}
               />
             </span>
+            <textarea
+              value={protestInfo} 
+              onChange={(e) => setProtestInfo(e.target.value)} 
+              placeholder="Info about protest, example: you need to wear masks to assist, # of protesters"
+            >
+            </textarea>
             <button onClick={handleAddProtest}>Submit</button>
           </div>
         </Popup>
@@ -189,9 +215,13 @@ const ProtestMap = () => {
     }
 };
 
+let count = 0;
+
 const renderFilteredList = () => {
   return filterProtests().map((protest) => {
-    console.log(protest.peaceful);
+    if(protest.user.toString() === currentUserId){
+      count = 1;
+    }
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -203,9 +233,10 @@ const renderFilteredList = () => {
               This protest is:{" "}
               {protest.isViolent ? "Not Peaceful" : "Peaceful"}
             </p>
-            <button onClick={() => handleDeleteProtest(protest._id)}>
+              {protest.protestInfo && <p>{protest.protestInfo}</p>}
+            {count==1 && <button onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
-            </button>
+            </button>}
           </span>
         </Popup>
       </Marker>

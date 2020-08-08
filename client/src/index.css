@@ -218,6 +218,11 @@ body {
     color: rgb(7, 5, 5);
     text-align: center;
   }
+
+  .spacer {
+    height: 8%;
+    visibility: hidden;
+  }
   
   .thread-button{
     position: relative;
@@ -283,4 +288,13 @@ body {
   .reply-button1:hover {
     cursor: pointer;
     color: black;
+  }
+
+  .guidelines-button {
+    color: rgb(101, 101, 245);
+    text-decoration: underline;
+  }
+
+  .guidelines-button:hover {
+    cursor: pointer;
   }
