@@ -82,7 +82,8 @@ exports.createProtest = async (req, res) => {
       coordinates: {
         lat: req.body.coordinates.lat,
         long: req.body.coordinates.long,
-      }
+      },
+      protestInfo: req.body.protestInfo
     });
 
     if (pin._id) {

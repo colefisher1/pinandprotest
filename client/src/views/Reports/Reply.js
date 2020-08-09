@@ -3,15 +3,16 @@ import Post from "./Post";
 
 const Reply = (props) => {
     return(
-            <div >
+            <div>
                 {
-                    props.posts.map((post) => (
+                    props.replies.map((post) => (
                             <React.Fragment>
                                 {   
-                                    post.replyingTo === props.parentUsername &&
                                     <div className="replies">
                                         <Post post={post} key={post._id} addPost={props.addPost} posts={props.posts} setPosts={props.setPosts} />
                                         <Reply posts={props.posts} setPosts={props.setPosts} addPost={props.addPost} parentUsername={post._id}/>
+                                        {/* <Post post={post} key={post.id} addPost={props.addPost} posts={props.posts} setPosts={props.setPosts} />
+                                        <Reply posts={props.posts} setPosts={props.setPosts} addPost={props.addPost} parentUsernameId={post.id} replies={post.replies}/> */}
                                     </div>
                                 }
                             </React.Fragment>

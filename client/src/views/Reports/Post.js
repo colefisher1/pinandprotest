@@ -84,7 +84,8 @@ const Post = (props) => {
                 {/* </Card.Header> */}
                 <Card.Body>
                      {/*Renders post content*/}
-                    {props.post.content}
+                    {props.post.isThread && <b>{props.post.content}</b>}
+                    {!props.post.isThread && props.post.content}
                 </Card.Body>
                 <div className="buttons">
                 
@@ -95,13 +96,13 @@ const Post = (props) => {
                         </span> 
                     </div>
                     <div className="like-button">
-                        <span onClick={onLikeClicked} >
+                        <span onClick={onLikeClicked} style={{color: likeClick && 'black'}}>
                         <i class="far fa-thumbs-up" style={{marginRight: "5px"}}></i>
                             Like  {likes !== 0 && likes}
                         </span>
                     </div>
                     <div className="dislike-button">
-                        <span onClick={onDislikeClicked} >
+                        <span onClick={onDislikeClicked} style={{color: dislikeClick && 'black'}}>
                             <i class="far fa-thumbs-down" style={{marginRight: "5px"}}></i>
                             Dislike {dislikes !== 0 && dislikes}
                         </span>
