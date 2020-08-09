@@ -3,6 +3,7 @@ body {
     font-family: 'Abhaya Libre', serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; 
+    overflow-y: overlay; /* Fixes scrollbar bug in accounts page */
   }
   
   code {
@@ -78,6 +79,14 @@ body {
   .mapbox {
     position: relative;
     width: 100%;
+  }
+
+  .text-box {
+    min-width: 250px;
+  }
+
+  .add-protest-label {
+    padding-left: 30px;
   }
   
   /*Used to help with vertical spacing*/

@@ -26,6 +26,7 @@ const ProtestMap = (props) => {
     locationData = JSON.parse(localStorage.getItem("map_location"));
     location = [locationData.lat, locationData.long];
     zoomConstant = 18;
+
   }
   else {
     location = florida;
@@ -47,6 +48,13 @@ const ProtestMap = (props) => {
 
   const redPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', 
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+  });
+
+  const yellowPin = new L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png', 
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -205,19 +213,18 @@ const ProtestMap = (props) => {
         <Marker position={creatingProtest}></Marker>
         <Popup keepInView position={popupLocation}>
           <div
-            style={{ backgroundColor: "rgb(120,120,120)" }}
+            //style={{ backgroundColor: "rgb(120,120,120)" }}
             className="add-protest-box"
           >
+            <h4 class= "mx-auto protestlabel">Add Protest</h4>
             <span className="add-protest-box-span">
-              <p>Peaceful</p>
+              <label class="form-check-label">Peaceful</label>
               <input
                 checked={peaceful === true}
                 type="checkbox"
                 onChange={(e) => setPeaceful(true)}
               />
-            </span>
-            <span className="add-protest-box-span">
-              <p>Non-Peaceful</p>
+              <label class= "form-check-label">Non-Peaceful</label>
               <input
                 type="checkbox"
                 checked={peaceful === false}
@@ -225,12 +232,13 @@ const ProtestMap = (props) => {
               />
             </span>
             <textarea
+              class="mx-auto text-box"
               value={protestInfo} 
               onChange={(e) => setProtestInfo(e.target.value)} 
-              placeholder="Info about protest, example: you need to wear masks to assist, # of protesters"
+              placeholder="Enter Protest Information (movement, mask requirement, # of protesters, etc.)"
             >
             </textarea>
-            <button onClick={handleAddProtest}>Submit</button>
+            <button class= "mx-auto" onClick={handleAddProtest}>Submit</button>
           </div>
         </Popup>
       </Fragment>

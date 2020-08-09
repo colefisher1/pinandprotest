@@ -36,17 +36,12 @@ const Account = (props) => {
       window.location.href = pathUrl;
     }
 
-    const onDeleteClick = (event) => {
-      event.preventDefault();
-      //Remove pin from db here
-    }
-
     console.log(pins);
     if (pins && pins.length > 0) {
       const pinsArr = pins.filter((obj) => obj).map(pin => 
           <div class="row mx-auto newsarticle" onClick={(e) => goToPin(pin.coordinates)}>
               <div class="col my-auto">
-                  <h3>{pin.address === "" ? "No Address" : pin.address}</h3>
+                  <h3>{pin.address === "" ? "Address Not Found" : pin.address}</h3>
                   <p>
                     <b>Info: </b>{`${pin.protestInfo === "" ? "None" : pin.protestInfo}`}<br/>
                     <b>Peaceful: </b>{`${pin.isViolent === true ? "No" : "Yes"}`} <br/>
