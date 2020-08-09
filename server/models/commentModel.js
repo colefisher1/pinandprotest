@@ -20,6 +20,10 @@ const commentSchema = mongoose.Schema({
     type: String,
     default: null
   },
+  replies: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'comments'
+  }],
   content: {
     type: String,
     required: true

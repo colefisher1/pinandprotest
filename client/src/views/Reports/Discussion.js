@@ -20,14 +20,23 @@ const Discussion = () => {
         }
       })
         .then((res) => res.json())
-        .then((data) => setPosts([...data]));
+        .then((data) => {
+          data.forEach((comment) => {
+            comment.replies.forEach((reply, index) => {
+              data.forEach((child) => {
+                if(child._id === reply)
+                  comment.replies[index] = child;
+              })
+            });
+          })
+          setPosts([...data]);
+        });
     }, []);
 
-    console.log('teeeest', posts);
-
+    console.log('comments',posts);
 
     //passing user post content
-    function addPost(post, replyingTo) {
+    function addPost(post, replyingToID) {
         //console.log("this post Content from POdt addition: " + post);
 
         //push post to posts array
@@ -42,7 +51,7 @@ const Discussion = () => {
           body: JSON.stringify({
             usernameToken: usernameToken,
             post,
-            replyingTo
+            replyingToID
           })
         })
           .then((res) => res.json())
@@ -51,13 +60,24 @@ const Discussion = () => {
               _id: data.commentID,
               user: data.user,
               username: data.username,
-              replyingToID: null,
-              replyingTo: null,
+              replyingToID: data.replyingToID,
+              replyingTo: data.replyingTo,
               content: post,
+              replies: [],
               likes: 0,
               dislikes: 0,
               date: data.date
             });
+
+            if(previousPosts[previousPosts.length - 1].replyingToID !== null) {
+              previousPosts.forEach((myPost) => {
+                if(myPost._id == previousPosts[previousPosts.length - 1].replyingToID) {
+                  myPost.replies.push(previousPosts[previousPosts.length - 1]);
+                }
+              })
+            }
+
+            console.log('is njullll', previousPosts[previousPosts.length - 1].replyingToID === null)
 
             setPosts([...previousPosts]);
           })
@@ -107,10 +127,10 @@ const Discussion = () => {
                 {
                     posts.map((post) => (
                             (
-                                !post.replyingTo &&
+                                !post.replyingToID &&
                                 <React.Fragment>
-                                        <Post post={post} key={post.id} addPost={addPost} posts={posts} setPosts={setPosts} />
-                                        <Reply posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post.id} replies={post.replies}/>
+                                        <Post post={post} key={post._id} addPost={addPost} posts={posts} setPosts={setPosts} />
+                                        <Reply posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post._id} replies={post.replies}/>
                                 </React.Fragment>
                             )
                         )

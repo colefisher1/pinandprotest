@@ -37,6 +37,7 @@ exports.login = async (req, res) => {
 exports.saveComments = async (req, res) => {
   const token = req.body.usernameToken;
   const post = req.body.post;
+  const replyingToID = req.body.replyingToID;
 
   const decodedToken = jwt.decode(token, jwtKey);
 
@@ -47,19 +48,47 @@ exports.saveComments = async (req, res) => {
   const comment = new Comment({
     user: decodedToken._id,
     username: decodedToken.username,
-    content: post
+    content: post,
+    replyingToID
   })
 
   const commentID = comment._id;
 
-  comment.save();
+  
 
-  res.json({
-    username: decodedToken.username,
-    user: decodedToken._id,
-    commentID,
-    date: comment.date
-  });
+  if(replyingToID !== null) {
+    Comment.findOneAndUpdate({_id: replyingToID}, {$push: { replies: [commentID] }}, (err, doc, response) => {
+      if (err) throw err;
+
+      console.log('updated comment', doc);
+      console.log("my thingy");
+      comment.replyingTo = doc ? doc.username : null;
+
+      comment.save();
+
+      res.json({
+        username: decodedToken.username,
+        user: decodedToken._id,
+        commentID,
+        replyingToID,
+        replyingTo: doc ? doc.username : null,
+        date: comment.date
+      });
+    })
+  } else {
+    comment.save();
+
+    res.json({
+      username: decodedToken.username,
+      user: decodedToken._id,
+      commentID,
+      replyingToID: null,
+      replyingTo: null,
+      date: comment.date
+    });
+  }
+
+  
 } 
 
 exports.displayComments = async (req, res) => {

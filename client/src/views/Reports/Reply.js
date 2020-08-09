@@ -2,23 +2,27 @@ import React from "react";
 import Post from "./Post";
 
 const Reply = (props) => {
+    console.log('my reply', props.replies);
+    let renderedReplies;
+    if(props.replies) {
+        renderedReplies = props.replies.map((post) => {
+            return (
+                <React.Fragment>
+                {   
+                    <div className="replies">
+                        <Post post={post} key={post._id} addPost={props.addPost} posts={props.posts} setPosts={props.setPosts} />
+                        <Reply posts={props.posts} setPosts={props.setPosts} addPost={props.addPost} parentUsernameId={post._id} replies={post.replies}/>
+                    </div>
+                }
+                </React.Fragment>
+            )
+            
+        });
+    }
+
     return(
             <div>
-                {
-                    props.replies.map((post) => (
-                            <React.Fragment>
-                                {   
-                                    <div className="replies">
-                                        <Post post={post} key={post._id} addPost={props.addPost} posts={props.posts} setPosts={props.setPosts} />
-                                        <Reply posts={props.posts} setPosts={props.setPosts} addPost={props.addPost} parentUsername={post._id}/>
-                                        {/* <Post post={post} key={post.id} addPost={props.addPost} posts={props.posts} setPosts={props.setPosts} />
-                                        <Reply posts={props.posts} setPosts={props.setPosts} addPost={props.addPost} parentUsernameId={post.id} replies={post.replies}/> */}
-                                    </div>
-                                }
-                            </React.Fragment>
-                        )
-                    )
-                }
+                {renderedReplies}
             </div>
     )
 }
