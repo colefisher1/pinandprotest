@@ -6,6 +6,7 @@ import Reply from "./Reply";
 const Discussion = () => {
     const [showPostForm, setShowPostForm] = useState(false);
     const [posts, setPosts] = useState([]);
+    localStorage.removeItem("map_location");
 
     //passing user post content
     function addPost(post, username, parentCommentId, isThread) {

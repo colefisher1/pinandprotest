@@ -3,6 +3,7 @@ body {
     font-family: 'Abhaya Libre', serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; 
+    overflow-y: overlay; /* Fixes scrollbar bug in accounts page */
   }
   
   code {
@@ -79,6 +80,14 @@ body {
     position: relative;
     width: 100%;
   }
+
+  .text-box {
+    min-width: 250px;
+  }
+
+  .add-protest-label {
+    padding-left: 30px;
+  }
   
   /*Used to help with vertical spacing*/
   .halfspacer {
@@ -97,7 +106,7 @@ body {
     right: 0;
     top: 85px;
     width: 85%;
-    max-width: 800px;
+    max-width: 400px;
     position: absolute;
     z-index: 314159;
     pointer-events:initial;
@@ -290,6 +299,16 @@ body {
     color: black;
   }
 
+  /* ----- Account Page ----- */
+  .acct_heading {
+    text-align: center;
+  }
+
+  .bottom-corner {
+    position: absolute;
+    bottom:0;
+    right:0;
+  }
   .guidelines-button {
     color: rgb(101, 101, 245);
     text-decoration: underline;

@@ -52,6 +52,7 @@ exports.createProtest = async (req, res) => {
         lat: req.body.coordinates.lat,
         long: req.body.coordinates.long,
       },
+      address: req.body.address,
       protestInfo: req.body.protestInfo
     });
 
