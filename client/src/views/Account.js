@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Redirect } from 'react-router-dom';
-import ProtestMap from "./Map";
-import { propTypes } from "react-bootstrap/esm/Image";
+import Guidelines from "./Guidelines";
 
 const Account = (props) => {
     const [pins, setPins] = useState([]);
     localStorage.removeItem("map_location");
+    
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
     const createHistory = require("history").createBrowserHistory;
     const token = localStorage.getItem("token");
@@ -25,8 +27,6 @@ const Account = (props) => {
             })
     }, []);
     
-    
-    
     const goToPin = (coordinates) => {
       //props.setUserLocation([coordinates.lat, coordinates.long]);
       localStorage.setItem("map_location", JSON.stringify(coordinates));
@@ -43,11 +43,12 @@ const Account = (props) => {
 
     console.log(pins);
     if (pins && pins.length > 0) {
-      const pinsArr = pins.map(pin => 
+      const pinsArr = pins.filter((obj) => obj).map(pin => 
           <div class="row mx-auto newsarticle" onClick={(e) => goToPin(pin.coordinates)}>
               <div class="col my-auto">
-                  <h3>{pin.address}</h3>
+                  <h3>{pin.address === "" ? "No Address" : pin.address}</h3>
                   <p>
+                    <b>Info: </b>{`${pin.protestInfo === "" ? "None" : pin.protestInfo}`}<br/>
                     <b>Peaceful: </b>{`${pin.isViolent === true ? "No" : "Yes"}`} <br/>
                     <b>Latitude: </b>{pin.coordinates.lat} <br/>
                     <b>Longitude: </b>{pin.coordinates.long}
@@ -72,13 +73,28 @@ const Account = (props) => {
                 </div>
                 
               </div>
-              
+              <span class="guidelines-button" variant="primary" onClick={handleShow}>
+                Read Guidelines
+              </span>
+              <Guidelines show={show} setShow={setShow}/>
           </div>
       );
   }
   else {
       return (
-          <div></div>
+          <div>
+            <div class="row"><h2 class="mx-auto protestlabel">Account</h2></div>
+              <div class="row">
+                <div class="col acct_col">
+                    <h3 class="acct_heading protestlabel">Protest History</h3>
+                </div>
+                
+                <div class="col acct_col">
+                    <div><h3 class="acct_heading protestlabel">Comment History</h3></div> 
+                </div>
+                
+              </div>
+          </div>
       );
   }
 }

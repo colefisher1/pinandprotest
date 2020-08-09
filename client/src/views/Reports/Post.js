@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 
 const Post = (props) => {
     const usernameToken = localStorage.getItem('token'); 
-    //const [userName, setUserName] = useState("");
+    
     const [showPostForm, setShowPostForm] = useState(false);
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
@@ -31,12 +31,9 @@ const Post = (props) => {
             .then((res) => res.json())
             .then((data) => data.username)
             .then( (username) => {
-                    props.addPost(userReply, username, replyingTo);
+                    props.addPost(userReply, username, replyingTo, false);
                 }
             );
-        //call method that sets the postContent of a post to the value of the user input
-        //clear userPost
-        //setUserName("");
         setUserReply("");
         setShowPostForm(!showPostForm);
     }
@@ -97,7 +94,8 @@ const Post = (props) => {
                 {/* </Card.Header> */}
                 <Card.Body>
                      {/*Renders post content*/}
-                    {props.post.postContent}
+                    {props.post.isThread && <b>{props.post.postContent}</b>}
+                    {!props.post.isThread && props.post.postContent}
                 </Card.Body>
                 <div className="buttons">
                 
@@ -108,13 +106,13 @@ const Post = (props) => {
                         </span> 
                     </div>
                     <div className="like-button">
-                        <span onClick={onLikeClicked} >
+                        <span onClick={onLikeClicked} style={{color: likeClick && 'black'}}>
                         <i class="far fa-thumbs-up" style={{marginRight: "5px"}}></i>
                             Like  {likes !== 0 && likes}
                         </span>
                     </div>
                     <div className="dislike-button">
-                        <span onClick={onDislikeClicked} >
+                        <span onClick={onDislikeClicked} style={{color: dislikeClick && 'black'}}>
                             <i class="far fa-thumbs-down" style={{marginRight: "5px"}}></i>
                             Dislike {dislikes !== 0 && dislikes}
                         </span>

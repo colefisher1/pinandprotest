@@ -22,7 +22,7 @@ import HomePage from "./views/Home/HomePage";
 
 const App = (props) => {
   const [loggedIn, setLoggedIn] = useState(
-    localStorage.getItem("token") == 'null' ? false : true
+    localStorage.getItem("token") === 'null' ? false : true
   );
   console.log("type of token", typeof localStorage.getItem('token'));
   console.log("token", localStorage.getItem('token'));

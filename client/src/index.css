@@ -97,7 +97,7 @@ body {
     right: 0;
     top: 85px;
     width: 85%;
-    max-width: 500px;
+    max-width: 400px;
     position: absolute;
     z-index: 314159;
     pointer-events:initial;
@@ -218,6 +218,11 @@ body {
     color: rgb(7, 5, 5);
     text-align: center;
   }
+
+  .spacer {
+    height: 8%;
+    visibility: hidden;
+  }
   
   .thread-button{
     position: relative;
@@ -294,4 +299,12 @@ body {
     position: absolute;
     bottom:0;
     right:0;
+  }
+  .guidelines-button {
+    color: rgb(101, 101, 245);
+    text-decoration: underline;
+  }
+
+  .guidelines-button:hover {
+    cursor: pointer;
   }

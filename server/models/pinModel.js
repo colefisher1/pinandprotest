@@ -22,8 +22,8 @@ const pinSchema = new mongoose.Schema({
     },
     address: {
         type: String
-    }//We may use a third party to convert lat and long to an address if leaflet doesn't include addresses.
-    //We may convert address to an object containing more information such as state, city, etc. to allow more refined filtering.
+    },
+    protestInfo: String
 });
 
 module.exports = {

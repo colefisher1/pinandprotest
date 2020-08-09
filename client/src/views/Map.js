@@ -4,7 +4,6 @@ import {Map, Marker, Popup, TileLayer } from "react-leaflet";
 import LeafletSearch from "react-leaflet-search";
 import L from 'leaflet';
 
-
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
 const florida = [27.6648, -81.5158];
@@ -34,6 +33,10 @@ const ProtestMap = (props) => {
   }
   const [userLocation, setUserLocation] = useState(location);
   const [zoomAmount, setZoomAmount] = useState(zoomConstant);
+  const [currentUserId, setCurrentUserId] = useState("");
+  const [protestInfo, setProtestInfo] = useState("");
+
+  const usernameToken = localStorage.getItem("token");
 
   const greenPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
@@ -64,6 +67,21 @@ const ProtestMap = (props) => {
       });
   }, []);
 
+    //fetch user id of current user
+    fetch(`${domain}/api/reports`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({usernameToken: usernameToken}),
+    })
+      .then((res) => res.json())
+      .then((data) => data._id)
+      .then( (id) => {
+              setCurrentUserId(id);
+          }
+      );
+
   //current location user
 
   //   useEffect(() => {
@@ -87,7 +105,8 @@ const ProtestMap = (props) => {
         lat: creatingProtest.lat,
         long: creatingProtest.lng,
       },
-      token
+      token,
+      protestInfo
     };
 
     console.log(newProtest);
@@ -102,6 +121,7 @@ const ProtestMap = (props) => {
       .then((data) => {
         setAddProtestBox(false);
         setProtestAddress("");
+        setProtestInfo("");
         setPeaceful(true);
         setCreatingProtest(null);
         setProtestList([...protestList, data]);
@@ -127,7 +147,11 @@ const ProtestMap = (props) => {
           let street = data.results[0].locations[0].street;
           let city = data.results[0].locations[0].adminArea5;
           let state = data.results[0].locations[0].adminArea3;
-          let address = street + ", " + city + ", " + state; 
+          let address = "";  
+          if(street !== ""){address += street + ", ";}
+          if(city !== ""){address += city + ", ";}
+          if(state !== ""){address += state;}
+
           setProtestAddress(address);
       });
     
@@ -146,6 +170,7 @@ const ProtestMap = (props) => {
 
   const handleDeleteProtest = (protestId) => {
     localStorage.removeItem("map_location");
+    
     const route = `${domain}/api/protest/${protestId}`;
     const token = localStorage.getItem("token");
     console.log("token", token);
@@ -163,7 +188,10 @@ const ProtestMap = (props) => {
           (protest) => protest._id !== protestId
         );
         setProtestList(newProtestList);
+        setUserLocation(florida);
+        setZoomAmount(7);
       });
+  
   };
 
   const renderCreateProtest = () => {
@@ -196,6 +224,12 @@ const ProtestMap = (props) => {
                 onChange={(e) => setPeaceful(false)}
               />
             </span>
+            <textarea
+              value={protestInfo} 
+              onChange={(e) => setProtestInfo(e.target.value)} 
+              placeholder="Info about protest, example: you need to wear masks to assist, # of protesters"
+            >
+            </textarea>
             <button onClick={handleAddProtest}>Submit</button>
           </div>
         </Popup>
@@ -225,9 +259,13 @@ const ProtestMap = (props) => {
     }
 };
 
+let count = 0;
+
 const renderFilteredList = () => {
   return filterProtests().map((protest) => {
-    console.log(protest.peaceful);
+    if(protest.user.toString() === currentUserId){
+      count = 1;
+    }
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -239,9 +277,10 @@ const renderFilteredList = () => {
               This protest is:{" "}
               {protest.isViolent ? "Not Peaceful" : "Peaceful"}
             </p>
-            <button onClick={() => handleDeleteProtest(protest._id)}>
+              {protest.protestInfo && <p>{protest.protestInfo}</p>}
+            {count==1 && <button onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
-            </button>
+            </button>}
           </span>
         </Popup>
       </Marker>

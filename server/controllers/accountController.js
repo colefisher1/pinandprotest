@@ -38,7 +38,7 @@ exports.reports = async (req, res) => {
 
   const decodedToken = jwt.decode(token, jwtKey);
 
-  res.json({username: decodedToken.username});
+  res.json({username: decodedToken.username, _id: decodedToken._id});
 } 
 
 exports.createProtest = async (req, res) => {
@@ -52,7 +52,8 @@ exports.createProtest = async (req, res) => {
         lat: req.body.coordinates.lat,
         long: req.body.coordinates.long,
       },
-      address: req.body.address
+      address: req.body.address,
+      protestInfo: req.body.protestInfo
     });
 
     if (pin._id) {

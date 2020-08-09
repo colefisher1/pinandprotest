@@ -29,7 +29,7 @@ const PostAddition = (props) => {
         .then((res) => res.json())
         .then((data) => data.username)
         .then( (username) => {
-                props.addPost(userPost, username);
+                props.addPost(userPost, username,"", true);
             }
         );
     

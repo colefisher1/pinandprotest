@@ -9,17 +9,29 @@ const Discussion = () => {
     localStorage.removeItem("map_location");
 
     //passing user post content
-    function addPost(post, username, something) {
-        //console.log("this post Content from POdt addition: " + post);
-
+    function addPost(post, username, parentCommentId, isThread) {
         //push post to posts array
         const previousPosts = posts;
-       
+        
+        const newPost = {
+            id: previousPosts.length + 1, 
+            isThread: isThread,
+            //eventually pass in pin
+            postContent: post, 
+            userName: username, 
+            replyingTo: parentCommentId, 
+            replies: []
+        }
         //dont really want to push a post this way, change code to deal with database
-        previousPosts.push({id: previousPosts.length + 1, postContent: post, userName: username, replyingTo: something });
+        previousPosts.push(newPost);
+
+        previousPosts.forEach((post) => {
+            if(post.id === parentCommentId)
+                post.replies.push(newPost);
+        })
 
         setPosts([...previousPosts]);
-    }
+    } 
 
     return(
         <div>
@@ -30,7 +42,7 @@ const Discussion = () => {
                                 !post.replyingTo &&
                                 <React.Fragment>
                                         <Post post={post} key={post.id} addPost={addPost} posts={posts} setPosts={setPosts} />
-                                        <Reply posts={posts} setPosts={setPosts} addPost={addPost} parentUsername={post.id}/>
+                                        <Reply posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post.id} replies={post.replies}/>
                                 </React.Fragment>
                             )
                         )
@@ -40,6 +52,7 @@ const Discussion = () => {
             <div>
                 {showPostForm && <PostAddition addPost={addPost} showPostForm={showPostForm} setShowPostForm={setShowPostForm}/>}
             </div>
+            <div class="spacer">.....</div>
             <div className="Footer">
                 <button className="thread-button" onClick= {() => setShowPostForm(!showPostForm)}>
                     Start new thread
