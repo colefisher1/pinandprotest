@@ -2,7 +2,6 @@ import React from "react";
 import Post from "./Post";
 
 const Reply = (props) => {
-    console.log('my reply', props.replies);
     let renderedReplies;
     if(props.replies) {
         renderedReplies = props.replies.map((post) => {

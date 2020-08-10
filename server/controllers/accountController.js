@@ -41,9 +41,7 @@ exports.saveComments = async (req, res) => {
 
   const decodedToken = jwt.decode(token, jwtKey);
 
-  console.log('post',post);
 
-  console.log(decodedToken);
 
   const comment = new Comment({
     user: decodedToken._id,
@@ -60,8 +58,6 @@ exports.saveComments = async (req, res) => {
     Comment.findOneAndUpdate({_id: replyingToID}, {$push: { replies: [commentID] }}, (err, doc, response) => {
       if (err) throw err;
 
-      console.log('updated comment', doc);
-      console.log("my thingy");
       comment.replyingTo = doc ? doc.username : null;
 
       comment.save();
@@ -95,16 +91,69 @@ exports.displayComments = async (req, res) => {
   const comments = Comment.find({}, (err, fetchedComments) => {
     if(err) throw err;
 
-    console.log(fetchedComments);
     res.send(fetchedComments);
   });
 
 } 
 
+const recursDelete = (comment) => {
+  console.log('comment replies', comment.replies)
+
+  comment.replies.forEach((reply) => {
+    Comment.findOneAndDelete({_id: reply}, (err, deletedComment) => {
+      if(err) throw err;
+      
+      if(deletedComment === null) return;
+
+      recursDelete(deletedComment);
+    });
+  });
+}
+
+exports.deleteComments = async (req, res) => {
+//   props.posts.map(post => {
+//     if(post.id === props.postId){
+//         props.posts.forEach(parent => {
+//             if (parent.id === post.replyingTo) {
+//                 parent.replies.forEach((reply, i) => {
+//                     if(reply.id === post.id)
+//                         parent.replies.splice(i, 1);
+//                 })
+//             }
+//         })
+//         deletePost(props.posts[props.posts.indexOf(post)]);
+//     }
+// })
+  const token = req.body.usernameToken;
+  const decodedToken = jwt.decode(token, jwtKey);
+  const deleteID = req.body.deleteID;
+
+
+
+  Comment.findOne({_id: deleteID}, (err, comment) => {
+    if(err) throw err;
+    
+    if(comment !== null) {
+      Comment.findOneAndUpdate({_id: comment.replyingToID}, { $pull: { replies: deleteID}}, (err, doc, response) => {
+        if(err) throw err;
+  
+        Comment.findOneAndDelete({_id: comment}, (err, deletedComment) => {
+          if(err) throw err;
+            
+          recursDelete(deletedComment);
+        });
+  
+        
+        res.send({ress: "deletion complete"});
+      });
+    }
+  })
+
+}
+
 exports.createProtest = async (req, res) => {
   try {
     const decoded = jwt.decode(req.body.token);
-    console.log("req.body.peaceful", req.body.peaceful);
     const pin = new Pin({
       user: decoded._id,
       isViolent: !req.body.peaceful,

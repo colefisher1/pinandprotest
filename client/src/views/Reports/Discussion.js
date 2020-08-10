@@ -49,7 +49,7 @@ const Discussion = () => {
             "content-type": "application/json",
           },
           body: JSON.stringify({
-            usernameToken: usernameToken,
+            usernameToken,
             post,
             replyingToID
           })
