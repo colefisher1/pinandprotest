@@ -278,6 +278,7 @@ const renderFilteredList = () => {
     //let date = protest.date.replace(/T(.*)/g, '');
     let date = new Date(protest.date);
     let formattedDate = date.toLocaleString("en-US");
+   // if(protest.address.containe=s)
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -290,7 +291,7 @@ const renderFilteredList = () => {
               This protest is:{" "}
               {protest.isViolent ? "Not Peaceful" : "Peaceful"}
             </p>
-            <p>Address: {protest.address}</p>
+            {(protest.address && !protest.address.includes("undefined")) && <p>Address: {protest.address}</p>}
               {protest.protestInfo && <p>{protest.protestInfo}</p>}
             {count==1 && <button className="deleteProtest" onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
