@@ -23,7 +23,12 @@ const pinSchema = new mongoose.Schema({
     address: {
         type: String
     },
-    protestInfo: String
+    protestInfo: String,
+    date: {
+        type: Date,
+        default: Date.now,
+        required: true
+      }
 });
 
 module.exports = {

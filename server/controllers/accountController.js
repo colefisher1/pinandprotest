@@ -224,3 +224,11 @@ exports.displayAccount = async (req, res) => {
   })
 
 }
+
+exports.sendId = async (req, res) => {
+
+  const decodedToken = jwt.decode(req.body.usernameToken, jwtKey);
+
+  res.json({ username: decodedToken.username, _id: decodedToken._id});
+
+}
