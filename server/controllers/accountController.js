@@ -1,5 +1,6 @@
 const { Account } = require("../models/accountModel");
 const { Pin } = require("../models/pinModel");
+const { Comment } = require('../models/commentModel');
 
 const jwt = require("jsonwebtoken");
 const jwtKey = require("./jwtKey");
@@ -33,18 +34,126 @@ exports.login = async (req, res) => {
   }
 };  
 
-exports.reports = async (req, res) => {
+exports.saveComments = async (req, res) => {
   const token = req.body.usernameToken;
+  const post = req.body.post;
+  const replyingToID = req.body.replyingToID;
 
   const decodedToken = jwt.decode(token, jwtKey);
 
-  res.json({username: decodedToken.username, _id: decodedToken._id});
+
+
+  const comment = new Comment({
+    user: decodedToken._id,
+    username: decodedToken.username,
+    content: post,
+    replyingToID
+  })
+
+  const commentID = comment._id;
+
+  
+
+  if(replyingToID !== null) {
+    Comment.findOneAndUpdate({_id: replyingToID}, {$push: { replies: [commentID] }}, (err, doc, response) => {
+      if (err) throw err;
+
+      comment.replyingTo = doc ? doc.username : null;
+
+      comment.save();
+
+      res.json({
+        username: decodedToken.username,
+        user: decodedToken._id,
+        commentID,
+        replyingToID,
+        replyingTo: doc ? doc.username : null,
+        date: comment.date
+      });
+    })
+  } else {
+    comment.save();
+
+    res.json({
+      username: decodedToken.username,
+      user: decodedToken._id,
+      commentID,
+      replyingToID: null,
+      replyingTo: null,
+      date: comment.date
+    });
+  }
+
+  
 } 
+
+exports.displayComments = async (req, res) => {
+  const comments = Comment.find({}, (err, fetchedComments) => {
+    if(err) throw err;
+
+    res.send(fetchedComments);
+  });
+
+} 
+
+const recursDelete = (comment) => {
+  console.log('comment replies', comment.replies)
+
+  comment.replies.forEach((reply) => {
+    Comment.findOneAndDelete({_id: reply}, (err, deletedComment) => {
+      if(err) throw err;
+      
+      if(deletedComment === null) return;
+
+      recursDelete(deletedComment);
+    });
+  });
+}
+
+exports.deleteComments = async (req, res) => {
+//   props.posts.map(post => {
+//     if(post.id === props.postId){
+//         props.posts.forEach(parent => {
+//             if (parent.id === post.replyingTo) {
+//                 parent.replies.forEach((reply, i) => {
+//                     if(reply.id === post.id)
+//                         parent.replies.splice(i, 1);
+//                 })
+//             }
+//         })
+//         deletePost(props.posts[props.posts.indexOf(post)]);
+//     }
+// })
+  const token = req.body.usernameToken;
+  const decodedToken = jwt.decode(token, jwtKey);
+  const deleteID = req.body.deleteID;
+
+
+
+  Comment.findOne({_id: deleteID}, (err, comment) => {
+    if(err) throw err;
+    
+    if(comment !== null) {
+      Comment.findOneAndUpdate({_id: comment.replyingToID}, { $pull: { replies: deleteID}}, (err, doc, response) => {
+        if(err) throw err;
+  
+        Comment.findOneAndDelete({_id: comment}, (err, deletedComment) => {
+          if(err) throw err;
+            
+          recursDelete(deletedComment);
+        });
+  
+        
+        res.send({ress: "deletion complete"});
+      });
+    }
+  })
+
+}
 
 exports.createProtest = async (req, res) => {
   try {
     const decoded = jwt.decode(req.body.token);
-    console.log("req.body.peaceful", req.body.peaceful);
     const pin = new Pin({
       user: decoded._id,
       isViolent: !req.body.peaceful,
