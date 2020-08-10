@@ -52,7 +52,11 @@ exports.saveComments = async (req, res) => {
 
   const commentID = comment._id;
 
-  
+  Account.findOneAndUpdate({username: decodedToken.username}, {$push: {comments: [commentID]}}, (err, doc, myRes) => {
+    if(err) throw err;
+
+    console.log('modified doc', doc);
+  });
 
   if(replyingToID !== null) {
     Comment.findOneAndUpdate({_id: replyingToID}, {$push: { replies: [commentID] }}, (err, doc, response) => {
@@ -103,34 +107,30 @@ exports.displayComments = async (req, res) => {
 
 } 
 
-const recursDelete = (comment) => {
+const recursDelete = (comment, decodedToken) => {
   console.log('comment replies', comment.replies)
 
   comment.replies.forEach((reply) => {
-    Comment.findOneAndDelete({_id: reply}, (err, deletedComment) => {
-      if(err) throw err;
-      
-      if(deletedComment === null) return;
 
-      recursDelete(deletedComment);
+    Account.findOneAndUpdate({username: decodedToken.username}, {$pull: { comments: reply}}, (error, doc, response) => {
+      if(error) throw error;
+
+      Comment.findOneAndDelete({_id: reply}, (err, deletedComment) => {
+        if(err) throw err;
+        
+        if(deletedComment === null) return;
+  
+
+        recursDelete(deletedComment, decodedToken);
+      });
     });
+
+    
   });
 }
 
 exports.deleteComments = async (req, res) => {
-//   props.posts.map(post => {
-//     if(post.id === props.postId){
-//         props.posts.forEach(parent => {
-//             if (parent.id === post.replyingTo) {
-//                 parent.replies.forEach((reply, i) => {
-//                     if(reply.id === post.id)
-//                         parent.replies.splice(i, 1);
-//                 })
-//             }
-//         })
-//         deletePost(props.posts[props.posts.indexOf(post)]);
-//     }
-// })
+
   const token = req.body.usernameToken;
   const decodedToken = jwt.decode(token, jwtKey);
   const deleteID = req.body.deleteID;
@@ -141,13 +141,17 @@ exports.deleteComments = async (req, res) => {
     if(err) throw err;
     
     if(comment !== null) {
-      Comment.findOneAndUpdate({_id: comment.replyingToID}, { $pull: { replies: deleteID}}, (err, doc, response) => {
-        if(err) throw err;
+      Account.findOneAndUpdate({username: decodedToken.username}, {$pull: { comments: deleteID}}, (error, doc, response) => {
+        if(error) throw error;
+      });
+
+      Comment.findOneAndUpdate({_id: comment.replyingToID}, { $pull: { replies: deleteID}}, (error, doc, response) => {
+        if(error) throw error;
   
-        Comment.findOneAndDelete({_id: comment}, (err, deletedComment) => {
-          if(err) throw err;
+        Comment.findOneAndDelete({_id: comment}, (myError, deletedComment) => {
+          if(myError) throw myError;
             
-          recursDelete(deletedComment);
+          recursDelete(deletedComment, decodedToken);
         });
   
         
@@ -220,14 +224,37 @@ exports.displayAccount = async (req, res) => {
     if (err) throw err;
     
     const pinPromises = [];
+    const commentPromises = [];
+    const response = {
+      pins: [],
+      comments: []
+    }
 
     user.pins.forEach(pin => {
       const promise = Pin.findOne({_id: pin}).exec();
       pinPromises.push(promise);
     });
 
+    user.comments.forEach(comment => {
+      const promise = Comment.findOne({_id: comment}).exec();
+      commentPromises.push(promise);
+    })
+
+
     Promise.all(pinPromises)
-      .then((pins) => res.send(pins));
+      .then((pins) => {
+        response.pins = pins;
+      })
+      .then(()=> {
+        Promise.all(commentPromises)
+        .then((comments) => {
+          response.comments = comments;
+          res.send(response);
+        })
+
+      })
+
+    
   })
 
 }
