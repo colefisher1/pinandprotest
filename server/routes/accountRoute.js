@@ -9,7 +9,8 @@ const {
   saveComments,
   displayComments,
   deleteComments,
-  displayAccount
+  displayAccount,
+  sendId
 } = require("../controllers/accountController");
 
 router.route('/register').post(register);
@@ -21,5 +22,6 @@ router.route('/protest').post(createProtest);
 router.route('/protests').get(getAllProtests);
 router.route('/protest/:protestId').delete(deleteProtest);
 router.route('/account').put(displayAccount);
+router.route('/sendid').post(sendId);
 
 module.exports = router;

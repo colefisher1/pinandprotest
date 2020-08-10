@@ -15,7 +15,6 @@ const Reply = (props) => {
                 }
                 </React.Fragment>
             )
-            
         });
     }
 

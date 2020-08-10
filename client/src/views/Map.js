@@ -6,17 +6,35 @@ import L from 'leaflet';
 
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
-const position = [27.6648, -81.5158];
+const florida = [27.6648, -81.5158];
 
 const ProtestMap = (props) => {
-
+  
   const [addProtestBox, setAddProtestBox] = useState(false);
   const [peaceful, setPeaceful] = useState(true);
   const [protestAddress, setProtestAddress] = useState("");
-  const [userLocation, setUserLocation] = useState([27.6648, -81.5158]);
+  //const [userLocation, setUserLocation] = useState(props.userLocation);
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
+  
+  
+  
+  console.log(localStorage.getItem("map_location"));
+
+  let locationData, location, zoomConstant;
+  if(localStorage.getItem("map_location")) {
+    locationData = JSON.parse(localStorage.getItem("map_location"));
+    location = [locationData.lat, locationData.long];
+    zoomConstant = 18;
+
+  }
+  else {
+    location = florida;
+    zoomConstant = 7;
+  }
+  const [userLocation, setUserLocation] = useState(location);
+  const [zoomAmount, setZoomAmount] = useState(zoomConstant);
   const [currentUserId, setCurrentUserId] = useState("");
   const [protestInfo, setProtestInfo] = useState("");
 
@@ -31,6 +49,13 @@ const ProtestMap = (props) => {
 
   const redPin = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', 
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+  });
+
+  const yellowPin = new L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png', 
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -52,7 +77,7 @@ const ProtestMap = (props) => {
   }, []);
 
     //fetch user id of current user
-    fetch(`${domain}/api/reports`, {
+    fetch(`${domain}/api/sendid`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -81,10 +106,10 @@ const ProtestMap = (props) => {
     const token = localStorage.getItem("token");
 
     console.log("peaceful", peaceful);
-
+    
     const newProtest = {
       peaceful,
-      protestAddress,
+      address: protestAddress,
       coordinates: {
         lat: creatingProtest.lat,
         long: creatingProtest.lng,
@@ -93,6 +118,7 @@ const ProtestMap = (props) => {
       protestInfo
     };
 
+    console.log(newProtest);
     fetch(`${domain}/api/protest`, {
       method: "POST",
       headers: {
@@ -112,10 +138,32 @@ const ProtestMap = (props) => {
   };
 
   const createProtest = (e) => {
+    localStorage.removeItem("map_location");
     setCreatingProtest(null);
     setAddProtestBox(false);
     setCreatingProtest(e.latlng);
     setAddProtestBox(true);
+    
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+    fetch(`${proxyUrl}http://open.mapquestapi.com/geocoding/v1/reverse?key=p3ngfpqJsUmii1sppAGgAAe9YgCdqoHY
+    &location=${e.latlng.lat},${e.latlng.lng}`)
+      .then(response => {
+          return response.json();
+      })
+      .then(data => {
+          //Store fetched data into an array and set state
+          console.log(data);
+          let street = data.results[0].locations[0].street;
+          let city = data.results[0].locations[0].adminArea5;
+          let state = data.results[0].locations[0].adminArea3;
+          let address = "";  
+          if(street !== ""){address += street + ", ";}
+          if(city !== ""){address += city + ", ";}
+          if(state !== ""){address += state;}
+
+          setProtestAddress(address);
+      });
+    
   };
 
   const handleFilter = (type) => {
@@ -130,6 +178,8 @@ const ProtestMap = (props) => {
 
 
   const handleDeleteProtest = (protestId) => {
+    localStorage.removeItem("map_location");
+    
     const route = `${domain}/api/protest/${protestId}`;
     const token = localStorage.getItem("token");
     console.log("token", token);
@@ -147,13 +197,16 @@ const ProtestMap = (props) => {
           (protest) => protest._id !== protestId
         );
         setProtestList(newProtestList);
+        setUserLocation(florida);
+        setZoomAmount(7);
       });
+  
   };
 
   const renderCreateProtest = () => {
     const locationClone = { ...creatingProtest };
     const popupLocation = {
-      lat: locationClone.lat + 0.04,
+      lat: locationClone.lat,
       lng: locationClone.lng,
     };
     return (
@@ -161,19 +214,18 @@ const ProtestMap = (props) => {
         <Marker position={creatingProtest}></Marker>
         <Popup keepInView position={popupLocation}>
           <div
-            style={{ backgroundColor: "rgb(120,120,120)" }}
+            //style={{ backgroundColor: "rgb(120,120,120)" }}
             className="add-protest-box"
           >
+            <h4 class= "mx-auto protestlabel">Add Protest</h4>
             <span className="add-protest-box-span">
-              <p>Peaceful</p>
+              <label class="form-check-label">Peaceful</label>
               <input
                 checked={peaceful === true}
                 type="checkbox"
                 onChange={(e) => setPeaceful(true)}
               />
-            </span>
-            <span className="add-protest-box-span">
-              <p>Non-Peaceful</p>
+              <label class= "form-check-label">Non-Peaceful</label>
               <input
                 type="checkbox"
                 checked={peaceful === false}
@@ -181,12 +233,13 @@ const ProtestMap = (props) => {
               />
             </span>
             <textarea
+              class="mx-auto text-box"
               value={protestInfo} 
               onChange={(e) => setProtestInfo(e.target.value)} 
-              placeholder="Info about protest, example: you need to wear masks to assist, # of protesters"
+              placeholder="Enter Protest Information (movement, mask requirement, # of protesters, etc.)"
             >
             </textarea>
-            <button onClick={handleAddProtest}>Submit</button>
+            <button className= "mx-auto submit-protest" onClick={handleAddProtest}>Submit</button>
           </div>
         </Popup>
       </Fragment>
@@ -222,6 +275,10 @@ const renderFilteredList = () => {
     if(protest.user.toString() === currentUserId){
       count = 1;
     }
+    //let date = protest.date.replace(/T(.*)/g, '');
+    let date = new Date(protest.date);
+    let formattedDate = date.toLocaleString("en-US");
+   // if(protest.address.containe=s)
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -229,12 +286,14 @@ const renderFilteredList = () => {
       >
         <Popup>
           <span className="protest-span">
+            <p>Reported at: {formattedDate}</p>
             <p>
               This protest is:{" "}
               {protest.isViolent ? "Not Peaceful" : "Peaceful"}
             </p>
+            {(protest.address && !protest.address.includes("undefined")) && <p>Address: {protest.address}</p>}
               {protest.protestInfo && <p>{protest.protestInfo}</p>}
-            {count==1 && <button onClick={() => handleDeleteProtest(protest._id)}>
+            {count==1 && <button className="deleteProtest" onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
             </button>}
           </span>
@@ -249,11 +308,8 @@ const renderFilteredList = () => {
       <div class="spacer2"></div>
       <div class="row taskbar rounded-pill mx-auto">
           <div class="col-1"></div>
-          <div class="col">
-            
-            <div class="spacer"></div>
-            <div class="halfspacer"></div>
-            <div class="row">
+          <div class="col my-auto">
+            <div class="row mx-auto">
               <label class="protestlabel">Filter by Protest Type:</label>
               <form onClick={(e) => e.stopPropagation()} action="">
                 <div class="form-check">
@@ -280,27 +336,15 @@ const renderFilteredList = () => {
                     Non-peaceful
                   </label>
                 </div>
-                </form>
+              </form>
             </div>
-            </div>
-          <div class="col-3">
-            <div class="halfspacer"></div>
-            <button type="button" class="btn btn-block rounded-pill blue">
-              Add Protest{" "}
-            </button>
-          </div>
-          <div class="col-3">
-            <div class="halfspacer"></div>
-            <button type="button" class="btn btn-block rounded-pill blue">
-              Delete Protest
-            </button>
           </div>
         </div>
       <Map
         onClick={createProtest}
         class="container mapbox"
         center={userLocation}
-        zoom={7}
+        zoom={zoomAmount}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

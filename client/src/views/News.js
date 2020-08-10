@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 const News = () => {
     const [articles, setArticles] = useState([]);
-    
+    localStorage.removeItem("map_location");
     //Fetches data from News API after the page is rendered
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"
     useEffect(() => {
@@ -32,7 +32,7 @@ const News = () => {
                 <div class="spacer"></div>
                 <div class="spacer"></div>
                     <h4>{article.title}</h4>
-                    <h2 class="author_date">{article.source} - {article.date.replace(/T(.*)/g, '')}</h2>
+                    <h2 class="author_date">{article.source} - {article.date}</h2>
                     <p class="description">{article.description}</p>
                 </div>
             </div>

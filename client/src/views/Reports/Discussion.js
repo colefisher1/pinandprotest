@@ -7,6 +7,7 @@ const Discussion = () => {
     const [showPostForm, setShowPostForm] = useState(false);
     const [posts, setPosts] = useState([]);
     const [fetchedUsername, setFetchedUsername] = useState("");
+    localStorage.removeItem("map_location");
 
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
 

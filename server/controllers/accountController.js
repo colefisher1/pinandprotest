@@ -168,6 +168,7 @@ exports.createProtest = async (req, res) => {
         lat: req.body.coordinates.lat,
         long: req.body.coordinates.long,
       },
+      address: req.body.address,
       protestInfo: req.body.protestInfo
     });
 
@@ -228,5 +229,13 @@ exports.displayAccount = async (req, res) => {
     Promise.all(pinPromises)
       .then((pins) => res.send(pins));
   })
+
+}
+
+exports.sendId = async (req, res) => {
+
+  const decodedToken = jwt.decode(req.body.usernameToken, jwtKey);
+
+  res.json({ username: decodedToken.username, _id: decodedToken._id});
 
 }
