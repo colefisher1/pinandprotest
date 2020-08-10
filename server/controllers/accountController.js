@@ -88,10 +88,17 @@ exports.saveComments = async (req, res) => {
 } 
 
 exports.displayComments = async (req, res) => {
+  const token = req.body.usernameToken;
+  const decodedToken = jwt.decode(token, jwtKey);
+
   const comments = Comment.find({}, (err, fetchedComments) => {
     if(err) throw err;
 
-    res.send(fetchedComments);
+
+    res.send({
+      fetchedComments,
+      username: decodedToken.username
+    });
   });
 
 } 

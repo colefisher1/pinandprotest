@@ -6,20 +6,29 @@ import Reply from "./Reply";
 const Discussion = () => {
     const [showPostForm, setShowPostForm] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [fetchedUsername, setFetchedUsername] = useState("");
 
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
 
     const usernameToken = localStorage.getItem('token');
 
+  
     //fetching all comments from the database
     useEffect(() => {
       fetch(`${domain}/api/reports`, {
-        method: "GET",
+        method: "PUT",
         headers: {
           "content-type": "application/json",
-        }
+        },
+        body: JSON.stringify({
+          usernameToken
+        })
       })
         .then((res) => res.json())
+        .then((obj) => {
+          setFetchedUsername(obj.username);
+          return obj.fetchedComments;
+        })
         .then((data) => {
           data.forEach((comment) => {
             comment.replies.forEach((reply, index) => {
@@ -33,12 +42,10 @@ const Discussion = () => {
         });
     }, []);
 
-    console.log('comments',posts);
 
     //passing user post content
     function addPost(post, replyingToID) {
-        //console.log("this post Content from POdt addition: " + post);
-
+      
         //push post to posts array
         const previousPosts = posts;
        
@@ -76,8 +83,6 @@ const Discussion = () => {
                 }
               })
             }
-
-            console.log('is njullll', previousPosts[previousPosts.length - 1].replyingToID === null)
 
             setPosts([...previousPosts]);
           })
@@ -117,7 +122,6 @@ const Discussion = () => {
           //   required: true
           // }
         
-        console.log('mePosts', posts);
 
     }
 
@@ -129,8 +133,8 @@ const Discussion = () => {
                             (
                                 !post.replyingToID &&
                                 <React.Fragment>
-                                        <Post post={post} key={post._id} addPost={addPost} posts={posts} setPosts={setPosts} />
-                                        <Reply posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post._id} replies={post.replies}/>
+                                        <Post fetchedUsername={fetchedUsername} post={post} key={post._id} addPost={addPost} posts={posts} setPosts={setPosts} />
+                                        <Reply fetchedUsername={fetchedUsername} posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post._id} replies={post.replies}/>
                                 </React.Fragment>
                             )
                         )
