@@ -77,7 +77,7 @@ const ProtestMap = (props) => {
   }, []);
 
     //fetch user id of current user
-    fetch(`${domain}/api/reports`, {
+    fetch(`${domain}/api/sendid`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

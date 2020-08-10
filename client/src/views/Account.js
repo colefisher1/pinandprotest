@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Guidelines from "./Guidelines";
 
 const Account = (props) => {
+  localStorage.removeItem("map_location");
     const [pins, setPins] = useState([]);
-    localStorage.removeItem("map_location");
-    
+    const usernameToken = localStorage.getItem("token");
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
+    const [currentUsername, setCurrentUsername] = useState("");
     
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
     const createHistory = require("history").createBrowserHistory;
@@ -26,6 +27,21 @@ const Account = (props) => {
               setPins(data);
             })
     }, []);
+
+    //fetch username of current user
+    fetch(`${domain}/api/sendid`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({usernameToken: usernameToken}),
+    })
+      .then((res) => res.json())
+      .then((data) => data.username)
+      .then( (username) => {
+              setCurrentUsername(username);
+          }
+      );
     
     const goToPin = (coordinates) => {
       //props.setUserLocation([coordinates.lat, coordinates.long]);
@@ -56,7 +72,7 @@ const Account = (props) => {
           <div>
               <div class="spacer"></div>
               <div class="spacer"></div>
-              <div class="row"><h2 class="mx-auto protestlabel">Account</h2></div>
+      <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s account page</h2></div>
               <div class="row">
                 <div class="col acct_col">
                     <h3 class="acct_heading protestlabel">Protest History</h3>
