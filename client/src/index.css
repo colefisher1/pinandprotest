@@ -317,3 +317,18 @@ body {
   .guidelines-button:hover {
     cursor: pointer;
   }
+
+  .deleteProtest, .submit-protest {
+    border-radius: 3.5px;
+    background-color: #BEE3f2;
+    font-weight: 500;
+    border-color: #BEE3f2;
+    padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+  }
+
+  .deleteProtest:hover, .submit-protest:hover {
+    background-color: #a0d9f0;
+  }

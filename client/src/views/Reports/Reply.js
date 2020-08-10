@@ -4,7 +4,7 @@ import Post from "./Post";
 const Reply = (props) => {
     return(
             <div>
-                {
+                { (props.replies.length > 0) &&
                     props.replies.map((post) => (
                             <React.Fragment>
                                 {   

@@ -19,6 +19,7 @@ const ProtestMap = (props) => {
   const [filters, setFilters] = useState([]);
   
   
+  
   console.log(localStorage.getItem("map_location"));
 
   let locationData, location, zoomConstant;
@@ -238,7 +239,7 @@ const ProtestMap = (props) => {
               placeholder="Enter Protest Information (movement, mask requirement, # of protesters, etc.)"
             >
             </textarea>
-            <button class= "mx-auto" onClick={handleAddProtest}>Submit</button>
+            <button className= "mx-auto submit-protest" onClick={handleAddProtest}>Submit</button>
           </div>
         </Popup>
       </Fragment>
@@ -274,6 +275,9 @@ const renderFilteredList = () => {
     if(protest.user.toString() === currentUserId){
       count = 1;
     }
+    //let date = protest.date.replace(/T(.*)/g, '');
+    let date = new Date(protest.date);
+    let formattedDate = date.toLocaleString("en-US");
     return (
       <Marker
         icon={protest.isViolent === true ? redPin : greenPin}
@@ -281,12 +285,14 @@ const renderFilteredList = () => {
       >
         <Popup>
           <span className="protest-span">
+            <p>Reported at: {formattedDate}</p>
             <p>
               This protest is:{" "}
               {protest.isViolent ? "Not Peaceful" : "Peaceful"}
             </p>
+            <p>Address: {protest.address}</p>
               {protest.protestInfo && <p>{protest.protestInfo}</p>}
-            {count==1 && <button onClick={() => handleDeleteProtest(protest._id)}>
+            {count==1 && <button className="deleteProtest" onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
             </button>}
           </span>
