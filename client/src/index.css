@@ -4,24 +4,33 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; 
     overflow-y: overlay; /* Fixes scrollbar bug in accounts page */
+    font-family: 'Antic Slab', serif;
+
   }
   
   code {
     font-family: 'Abhaya Libre', serif;
+    font-family: 'Antic Slab', serif;
+
   }
-  
+  /*logo*/
+  .logo {
+    width: 400px;
+  }
+
   /* Styling for Navbar */
   .color-nav {
     background-color: white;
     font-family: 'Abhaya Libre', serif;
+    font-family: 'Antic Slab', serif;
+
   }
   .brand-nav {
-    border-bottom: 3px solid #BEE3f2;
     font-family: 'Abhaya Libre', serif;
     font-weight: bolder;
   }
   .nav-link:hover {
-    border-bottom: 3px solid #BEE3f2;
+    border-bottom: 3px solid #bcdbe5;
   }
   
   
@@ -32,7 +41,7 @@ body {
     margin: auto;
     background-color: white;
     font-family: 'Abhaya Libre', serif;
-    box-shadow:10px 10px 5px grey;
+    box-shadow: 5px 5px 0px #c9ad84;
     border-radius: 10px;
   }
   
@@ -41,24 +50,34 @@ body {
     height: 100vh;
     position: relative;
     padding: 20px;
-    background: white;
+    background: #c9ad84;
     width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
   
   .rightside{
     height: 100vh;
     font-family: 'Abhaya Libre', serif;
-    background: #bee3f2;
+    background: #bcdbe5;
     width: 50vw;
+  }
+
+  .login-btn {
+    background-color: red;
   }
   
   /* Info that shows on left side of main page */
   .app-info {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     font-family: 'Abhaya Libre', serif;
     font-weight: bolder;
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow:-5px 5px 0 #bcdbe5;
   }
   
   /* #BlackLivesMatter */
@@ -115,13 +134,13 @@ body {
   
   /* Styling for add/delete protest buttons */
   .btn{
-    background-color: #BEE3f2;
+    background-color: #bcdbe5;
     font-weight: bold;
     font-family: 'Abhaya Libre', serif;
   }
   
   .rounded-pill .blue {
-    background-color: #BEE3f2;
+    background-color: #bcdbe5;
   }
   
   /*Styling for protest filter/checkboxes */
@@ -153,7 +172,7 @@ body {
   
   /* ------------------------- News Feed page -------------------------*/
   .newsarticle {
-    border: 8px solid #BEE3f2;
+    border: 8px solid #bcdbe5;
     border-radius: 25px;
     min-height: 150px; 
     margin-top: 10px;
@@ -189,9 +208,9 @@ body {
     float: right;
     margin-top: 1em;
     border-radius: 3.5px;
-    background-color: #BEE3f2;
+    background-color: #bcdbe5;
     font-weight: 500;
-    border-color: #BEE3f2;
+    border-color: #bcdbe5;
     padding: 5px;
     padding-left: 7px;
     padding-right: 7px;
@@ -202,9 +221,9 @@ body {
     float: right;
     margin-top: 1em;
     border-radius: 3.5px;
-    background-color: #BEE3f2;
+    background-color: #bcdbe5;
     font-weight: 500;
-    border-color: #BEE3f2;
+    border-color: #bcdbe5;
     padding: 5px;
     padding-left: 7px;
     padding-right: 7px;
@@ -239,9 +258,9 @@ body {
     left: 10%;
     top: 15%;
     border-radius: 3.5px;
-    background-color: #BEE3f2;
+    background-color: #bcdbe5;
     font-weight: 500;
-    border-color: #BEE3f2;
+    border-color: #bcdbe5;
     padding: 5px;
     padding-left: 7px;
     padding-right: 7px;
@@ -331,4 +350,9 @@ body {
 
   .deleteProtest:hover, .submit-protest:hover {
     background-color: #a0d9f0;
+  }
+  
+  * {
+    font-family: 'Antic Slab', serif;
+
   }
