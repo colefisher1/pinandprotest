@@ -90,8 +90,8 @@ const Account = (props) => {
                   <h3>{comment.content}</h3>
                   <p>
                     <b>Date: </b>{comment.date.replace(/T(.*)/g, '')}<br/>
-                    <b>Likes: </b>{comment.likes}<br/>
-                    <b>Dislikes: </b>{comment.dislikes}<br/>
+                    <b>Likes: </b>{comment.likes.length}<br/>
+                    <b>Dislikes: </b>{comment.dislikes.length}<br/>
                   </p> 
               </div>
           </div>

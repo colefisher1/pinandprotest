@@ -16,6 +16,7 @@ body {
   /*logo*/
   .logo {
     width: 200px;
+    margin: auto;
   }
 
   /* Styling for Navbar */

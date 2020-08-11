@@ -8,8 +8,7 @@ export const NavigationBar = () => (
         <img
             alt=""
             src="logo.png"
-            width="60"
-            height="30"
+            width="100"
             className="d-inline-block align-top"
 
         />{''}

@@ -69,7 +69,6 @@ const App = (props) => {
                       
                     </p>
                     {/* <Navbar.Brand className="brand-nav"> */}
-                     <img class="logo" src="logo.png"></img>
                     {/* </Navbar.Brand> */}
                   </h3></center>
                   </div>
