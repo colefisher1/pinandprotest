@@ -31,7 +31,6 @@ const Post = (props) => {
           })
             .then((res) => res.json())
             .then((data) => {
-                console.log("eyooo")
                 setLikes(data.likesNum);
                 setDislikes(data.dislikesNum);
             });

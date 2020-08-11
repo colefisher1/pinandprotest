@@ -165,10 +165,15 @@ exports.deleteComments = async (req, res) => {
 exports.displayLikes = async (req, res) => {
   const id = req.body.id;
   Comment.findOne({_id: id}, (err, comment) => {
-    res.send({
-      likesNum: comment.likes.length,
-      dislikesNum: comment.dislikes.length
-    })
+    if(err) throw err;
+
+    if(comment !== null) {
+      res.send({
+        likesNum: comment.likes.length,
+        dislikesNum: comment.dislikes.length
+      })
+    }
+      
   });
 }
 
