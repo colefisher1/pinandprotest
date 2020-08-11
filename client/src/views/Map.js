@@ -3,9 +3,6 @@ import React, { useState, useEffect, Fragment, useContext } from "react";
 import {Map, Marker, Popup, TileLayer } from "react-leaflet";
 import LeafletSearch from "react-leaflet-search";
 import L from 'leaflet';
-import { ShepherdTour, ShepherdTourContext } from 'react-shepherd'
-import {steps} from "./tourSteps"
-import 'shepherd.js/dist/css/shepherd.css';
 import Guidelines from "./Guidelines";
 
 //Currently, Florida is loaded in upon first entering the app
@@ -308,27 +305,6 @@ const renderFilteredList = () => {
   });
 };
 
-////////////////////////////////TOUR CODE
-const tourOptions = {
-  defaultStepOptions: {
-    classes: 'shepherd-theme-arrows',
-    cancelIcon: {
-      enabled: true
-    }
-  },
-  useModalOverlay: true
-};
-
-function Button() {
-  const tour = useContext(ShepherdTourContext);
-
-  return (
-    <button className="submit-protest" onClick={tour.start}>
-      Start Tour
-    </button>
-  );
-} //////////////////////////////
-
   return (
     <div style={{ height: "100%" }}>
       <div class="spacer2"></div>
@@ -366,9 +342,6 @@ function Button() {
             </div>
           </div>
         </div>
-        <ShepherdTour steps={steps} tourOptions={tourOptions}>
-           <Button />
-        </ShepherdTour>
       <Map
         onClick={createProtest}
         class="container mapbox"

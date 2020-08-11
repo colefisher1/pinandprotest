@@ -72,26 +72,6 @@ const Account = (props) => {
               </div>
           </div>
       );
-
-      const tourOptions = {
-        defaultStepOptions: {
-          classes: 'shepherd-theme-arrows',
-          cancelIcon: {
-            enabled: true
-          }
-        },
-        useModalOverlay: true
-      };
-      
-      function Button() {
-        const tour = useContext(ShepherdTourContext);
-      
-        return (
-          <button className="button dark" onClick={tour.start}>
-            Start Tour
-          </button>
-        );
-      }
       
       return (
           <div>
@@ -113,9 +93,6 @@ const Account = (props) => {
                 Read Guidelines
               </span>
               <Guidelines show={show} setShow={setShow}/>
-              <ShepherdTour steps={steps} tourOptions={tourOptions}>
-              <Button />
-              </ShepherdTour>
           </div>
       );
   }

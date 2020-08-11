@@ -62,10 +62,10 @@ const Post = (props) => {
         }
     }
 
-    //gets the current date
-    var d = Date(Date.now());
+    //gets the date comment was posted
+    var d = new Date(props.post.date);
     let a = d.toString();
-    
+
     return (
         <div>
             <Card className="comment-container">
