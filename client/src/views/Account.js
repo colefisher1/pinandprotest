@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import Guidelines from "./Guidelines";
-import { ShepherdTour, ShepherdTourContext } from 'react-shepherd'
-import {steps} from "./tourSteps"
-import 'shepherd.js/dist/css/shepherd.css';
 
 const Account = (props) => {
   localStorage.removeItem("map_location");

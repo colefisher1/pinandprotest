@@ -15,7 +15,7 @@ body {
   }
   /*logo*/
   .logo {
-    width: 400px;
+    width: 200px;
   }
 
   /* Styling for Navbar */
@@ -33,7 +33,6 @@ body {
     border-bottom: 3px solid #bcdbe5;
   }
   
-  
   .form-div {
     width: 100%;
     max-width: 330px;
@@ -41,7 +40,7 @@ body {
     margin: auto;
     background-color: white;
     font-family: 'Abhaya Libre', serif;
-    box-shadow: 5px 5px 0px #c9ad84;
+    box-shadow: 5px 5px 5px grey;
     border-radius: 10px;
   }
   
@@ -51,7 +50,7 @@ body {
     position: relative;
     padding: 20px;
     background: #c9ad84;
-    width: 50vw;
+    width: 60vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,8 +60,9 @@ body {
   .rightside{
     height: 100vh;
     font-family: 'Abhaya Libre', serif;
-    background: #bcdbe5;
-    width: 50vw;
+    background: #bcdbe59b;
+    width: 40vw;
+    float: right;
   }
 
   .login-btn {
@@ -71,15 +71,33 @@ body {
   
   /* Info that shows on left side of main page */
   .app-info {
-    position: absolute;
-    font-family: 'Abhaya Libre', serif;
+    font-family: 'Raleway', sans-serif;
     font-weight: bolder;
-    background-color: white;
+    color: rgb(217, 242, 243);
+    font-size: 50px;
+    font-weight: 900px;
+    text-shadow: 3px 3px black;
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-30%, -50%);
+    /* top: 20%;
+    left: 30%; */
+    /* display: inline-block; */
+    /* background-color: white;
     border-radius: 10px;
     padding: 40px;
-    box-shadow:-5px 5px 0 #bcdbe5;
+    box-shadow:-5px 5px 0 #bcdbe5; */
   }
   
+  .blur {
+    backdrop-filter: blur(3px);
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    position: relative;
+  }
+
   /* #BlackLivesMatter */
   .black-lives {
     position: absolute;
@@ -352,7 +370,12 @@ body {
     background-color: #a0d9f0;
   }
   
-  * {
-    font-family: 'Antic Slab', serif;
+  
 
+  .login-left{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../src/assets/protesters.jpg");
+    background-size: 100% 100%;
+    
   }
+
+ 
