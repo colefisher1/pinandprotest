@@ -109,7 +109,7 @@ const Post = (props) => {
                     </div>
                 
                     {/*this functionality (editing and deleting posts) should only be available to the comments created by the current user */}
-                    {(props.fetchedUsername == props.post.username) &&
+                    {(props.fetchedUsername == props.post.username || props.isAdmin) &&
                         <EditDelete fetchedUsername={props.fetchedUsername} displayedUsername={props.post.username} posts={props.posts} content={props.post.content} postId={props.post._id} setPosts={props.setPosts} addPost={props.addPost}/>
                     }
                 </div>

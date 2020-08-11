@@ -17,7 +17,7 @@ const ProtestMap = (props) => {
   const [protestList, setProtestList] = useState([]);
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
-  
+  const [isAdmin, setIsAdmin] = useState(false);
   
   
   console.log(localStorage.getItem("map_location"));
@@ -85,9 +85,12 @@ const ProtestMap = (props) => {
       body: JSON.stringify({usernameToken: usernameToken}),
     })
       .then((res) => res.json())
-      .then((data) => data._id)
+      .then((data) => {
+        setIsAdmin(data.isAdmin);
+        return data._id;
+      })
       .then( (id) => {
-              setCurrentUserId(id);
+            setCurrentUserId(id);
           }
       );
 
@@ -293,7 +296,7 @@ const renderFilteredList = () => {
             </p>
             {(protest.address && !protest.address.includes("undefined")) && <p>Address: {protest.address}</p>}
               {protest.protestInfo && <p>{protest.protestInfo}</p>}
-            {count==1 && <button className="deleteProtest" onClick={() => handleDeleteProtest(protest._id)}>
+            {(count==1 || isAdmin) && <button className="deleteProtest" onClick={() => handleDeleteProtest(protest._id)}>
               Delete Protest
             </button>}
           </span>

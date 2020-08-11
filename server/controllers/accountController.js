@@ -101,7 +101,8 @@ exports.displayComments = async (req, res) => {
 
     res.send({
       fetchedComments,
-      username: decodedToken.username
+      username: decodedToken.username,
+      isAdmin: decodedToken.isAdmin
     });
   });
 
@@ -201,16 +202,10 @@ exports.getAllProtests = async (req, res) => {
 
 exports.deleteProtest = async (req, res) => {
   try {
-    const decoded = jwt.decode(req.body.token);
+    await Pin.findOneAndDelete({ _id: req.params.protestId });
 
-    const pin = await Pin.findById(req.params.protestId);
+    res.send({ protestId: req.params.protestId });
 
-    if (decoded._id === pin.user.toString()) {
-      await Pin.findOneAndDelete({ _id: pin._id });
-      res.send({ protestId: req.params.protestId });
-    } else {
-      res.sendStatus(401);
-    }
   } catch (e) {
     console.log("error delete protest", e);
   }
@@ -263,6 +258,10 @@ exports.sendId = async (req, res) => {
 
   const decodedToken = jwt.decode(req.body.usernameToken, jwtKey);
 
-  res.json({ username: decodedToken.username, _id: decodedToken._id});
+  res.json({ 
+    username: decodedToken.username,
+    _id: decodedToken._id,
+    isAdmin: decodedToken.isAdmin
+  });
 
 }
