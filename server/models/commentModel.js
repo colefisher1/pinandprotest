@@ -28,16 +28,14 @@ const commentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  likes: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  dislikes: {
-    type: Number,
-    required: true,
-    default: 0
-  },
+  likes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'account'
+  }],
+  dislikes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'account'
+  }],
   date: {
     type: Date,
     default: Date.now,
