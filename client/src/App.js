@@ -37,8 +37,9 @@ const App = (props) => {
           <Switch>
             <div className="row no-gutters">
               <div className="col">
-                <div className="leftside">
-                  <h3 className="app-info">
+                <div className="leftside login-left">
+                  <div className="blur">
+                  <center><h3 className="app-info">
                     <p>
                       Pin a{" "}
                       <span style={{ textDecoration: "underline" }}>
@@ -60,10 +61,17 @@ const App = (props) => {
                       </span>
                       .
                     </p>
-                    <Navbar.Brand className="brand-nav">
-                     <img class="logo" src="logo.png"></img>
-                    </Navbar.Brand>
-                  </h3>
+                    <p>
+                      <span style={{fontSize: "45px", fontFamily: "Courgette", fontWeight: "500"}}>
+                        "A riot is the language of the unheard."
+                        <p style={{fontSize: "20px"}}>Martin Luther King Jr.</p>
+                      </span>
+                      
+                    </p>
+                    {/* <Navbar.Brand className="brand-nav"> */}
+                    {/* </Navbar.Brand> */}
+                  </h3></center>
+                  </div>
                 </div>
               </div>
               <div className="col">

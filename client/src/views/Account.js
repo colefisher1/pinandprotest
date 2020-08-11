@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import Guidelines from "./Guidelines";
-import { ShepherdTour, ShepherdTourContext } from 'react-shepherd'
-import {steps} from "./tourSteps"
-import 'shepherd.js/dist/css/shepherd.css';
 
 const Account = (props) => {
   localStorage.removeItem("map_location");
@@ -93,8 +90,8 @@ const Account = (props) => {
                   <h3>{comment.content}</h3>
                   <p>
                     <b>Date: </b>{comment.date.replace(/T(.*)/g, '')}<br/>
-                    <b>Likes: </b>{comment.likes}<br/>
-                    <b>Dislikes: </b>{comment.dislikes}<br/>
+                    <b>Likes: </b>{comment.likes.length}<br/>
+                    <b>Dislikes: </b>{comment.dislikes.length}<br/>
                   </p> 
               </div>
           </div>

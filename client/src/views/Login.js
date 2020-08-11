@@ -82,7 +82,9 @@ const Login = (props) => {
         <Form id="input" onSubmit={submitForm}>
           <FormGroup>
             <h2>
-              <center>Pin &amp; Protest</center>
+              <center>
+                <img class="logo" src="logo.png"></img>
+              </center>
             </h2>
             <Input
               type="form"
