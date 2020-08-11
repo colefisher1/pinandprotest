@@ -58,7 +58,7 @@ const Account = (props) => {
     console.log(pins);
     if (pins && pins.length > 0) {
       pinsArr = pins.filter((obj) => obj).map(pin => 
-        <div class="row mx-auto newsarticle" onClick={(e) => goToPin(pin.coordinates)}>
+        <div class="row mx-auto account-div">
             <div class="col my-auto">
                 <h3>{pin.address === "" ? "Address Not Found" : pin.address}</h3>
                 <p>
@@ -68,6 +68,13 @@ const Account = (props) => {
                   <b>Longitude: </b>{pin.coordinates.long}
                 </p> 
             </div>
+            <div class="col-4">
+              <button type="button" class="bottom-right" style={{marginLeft: "5px"}} onClick={(e) => goToPin(pin.coordinates)}>
+                View in Map <i class="fas fa-map-marked-alt"></i>
+              </button>
+            </div>
+          
+            
         </div>
       );
     }
@@ -76,7 +83,7 @@ const Account = (props) => {
     var commentArr;
     if (comments && comments.length > 0) {
       commentArr = comments.filter((obj) => obj).map(comment =>
-      <div class="row mx-auto newsarticle">
+      <div class="row mx-auto account-div">
               <div class="col my-auto">
                   <h3>{comment.content}</h3>
                   <p>
@@ -94,6 +101,10 @@ const Account = (props) => {
           <div class="spacer"></div>
           <div class="spacer"></div>
           <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s Account</h2></div>
+
+          <div class="row mx-auto">
+            <button className= "mx-auto submit-protest" onClick={handleShow}>Read Website Guidelines</button>
+          </div>
           <div class="row">
             <div class="col acct_col">
                 <h3 class="acct_heading protestlabel">Protest History</h3>
@@ -106,7 +117,7 @@ const Account = (props) => {
             </div>
             
           </div>
-          <button id="footer" className= "mx-auto submit-protest" onClick={handleShow}>Read Guidelines</button>
+          
           <Guidelines show={show} setShow={setShow}/>
         </div>
     );

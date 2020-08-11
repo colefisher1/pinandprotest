@@ -356,16 +356,28 @@ body {
     font-family: 'Antic Slab', serif;
   }
 
-  #footer {
-    position: fixed;
-    text-align: center;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    bottom: 1px;
-    font-size: 12px;
+  .bottom-right {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    color: grey;
+    border: none;
+    background: none;
   }
 
-  .underline {
-    border-bottom: 1px solid black;
+  .bottom-right:hover {
+    cursor: pointer;
+    color: black;
+  }
+
+  .account-div {
+    border: 8px solid #bcdbe5;
+    border-radius: 25px;
+    min-height: 150px; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    width: 90%;
+    max-width: 1000px;
+    position: relative;
   }
