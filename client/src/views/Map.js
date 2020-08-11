@@ -1,8 +1,12 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 
 import {Map, Marker, Popup, TileLayer } from "react-leaflet";
 import LeafletSearch from "react-leaflet-search";
 import L from 'leaflet';
+import { ShepherdTour, ShepherdTourContext } from 'react-shepherd'
+import {steps} from "./tourSteps"
+import 'shepherd.js/dist/css/shepherd.css';
+import Guidelines from "./Guidelines";
 
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
@@ -18,7 +22,8 @@ const ProtestMap = (props) => {
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
   
-  
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
   
   console.log(localStorage.getItem("map_location"));
 
@@ -303,6 +308,27 @@ const renderFilteredList = () => {
   });
 };
 
+////////////////////////////////TOUR CODE
+const tourOptions = {
+  defaultStepOptions: {
+    classes: 'shepherd-theme-arrows',
+    cancelIcon: {
+      enabled: true
+    }
+  },
+  useModalOverlay: true
+};
+
+function Button() {
+  const tour = useContext(ShepherdTourContext);
+
+  return (
+    <button className="submit-protest" onClick={tour.start}>
+      Start Tour
+    </button>
+  );
+} //////////////////////////////
+
   return (
     <div style={{ height: "100%" }}>
       <div class="spacer2"></div>
@@ -340,6 +366,9 @@ const renderFilteredList = () => {
             </div>
           </div>
         </div>
+        <ShepherdTour steps={steps} tourOptions={tourOptions}>
+           <Button />
+        </ShepherdTour>
       <Map
         onClick={createProtest}
         class="container mapbox"

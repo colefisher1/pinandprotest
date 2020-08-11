@@ -82,7 +82,7 @@ const Login = (props) => {
         <Form id="input" onSubmit={submitForm}>
           <FormGroup>
             <h2>
-              <center>Protest Tracker</center>
+              <center>Pin &amp; Protest</center>
             </h2>
             <Input
               type="form"

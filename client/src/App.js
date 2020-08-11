@@ -40,7 +40,7 @@ const App = (props) => {
                 <div className="leftside">
                   <Navbar.Brand className="brand-nav">
                     <h2>
-                      <b>Protest Tracker</b>
+                      <b>Pin &amp; Protest</b>
                     </h2>
                   </Navbar.Brand>
                   <h3 className="app-info">
