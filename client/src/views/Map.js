@@ -1,8 +1,9 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 
 import {Map, Marker, Popup, TileLayer } from "react-leaflet";
 import LeafletSearch from "react-leaflet-search";
 import L from 'leaflet';
+import Guidelines from "./Guidelines";
 
 //Currently, Florida is loaded in upon first entering the app
 //we need to change this so the user's selected state is loaded in from his/her account schema
@@ -18,7 +19,8 @@ const ProtestMap = (props) => {
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
   
-  
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
   
   console.log(localStorage.getItem("map_location"));
 

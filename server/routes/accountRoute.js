@@ -10,7 +10,7 @@ const {
   displayComments,
   deleteComments,
   displayAccount,
-  sendId
+  sendId,
 } = require("../controllers/accountController");
 
 router.route('/register').post(register);
