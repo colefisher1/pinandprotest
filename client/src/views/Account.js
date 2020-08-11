@@ -54,7 +54,7 @@ const Account = (props) => {
       window.location.href = pathUrl;
     }
 
-    var pinsArr = [];
+    var pinsArr;
     console.log(pins);
     if (pins && pins.length > 0) {
       pinsArr = pins.filter((obj) => obj).map(pin => 
@@ -73,13 +73,14 @@ const Account = (props) => {
     }
     
     console.log(currentUsername);
-    var commentArr = [];
+    var commentArr;
     if (comments && comments.length > 0) {
       commentArr = comments.filter((obj) => obj).map(comment =>
       <div class="row mx-auto newsarticle">
               <div class="col my-auto">
                   <h3>{comment.content}</h3>
                   <p>
+                    <b>Date: </b>{comment.date.replace(/T(.*)/g, '')}<br/>
                     <b>Likes: </b>{comment.likes}<br/>
                     <b>Dislikes: </b>{comment.dislikes}<br/>
                   </p> 
@@ -87,12 +88,12 @@ const Account = (props) => {
           </div>
       );
     }
-
+    
     return (
         <div>
           <div class="spacer"></div>
           <div class="spacer"></div>
-          <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s account page</h2></div>
+          <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s Account</h2></div>
           <div class="row">
             <div class="col acct_col">
                 <h3 class="acct_heading protestlabel">Protest History</h3>
@@ -105,9 +106,7 @@ const Account = (props) => {
             </div>
             
           </div>
-          <span class="guidelines-button" variant="primary" onClick={handleShow}>
-            Read Guidelines
-          </span>
+          <button id="footer" className= "mx-auto submit-protest" onClick={handleShow}>Read Guidelines</button>
           <Guidelines show={show} setShow={setShow}/>
         </div>
     );

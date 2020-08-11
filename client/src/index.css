@@ -354,5 +354,18 @@ body {
   
   * {
     font-family: 'Antic Slab', serif;
+  }
 
+  #footer {
+    position: fixed;
+    text-align: center;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    bottom: 1px;
+    font-size: 12px;
+  }
+
+  .underline {
+    border-bottom: 1px solid black;
   }
