@@ -8,6 +8,7 @@ const {
   deleteProtest,
   saveComments,
   displayComments,
+  editComment,
   deleteComments,
   displayLikes,
   adjustLikes,
@@ -19,6 +20,7 @@ router.route('/register').post(register);
 router.route('/login').post(login);
 router.route('/reports').post(saveComments);
 router.route('/reports').put(displayComments);
+router.route('/editcomment').put(editComment);
 router.route('/reports').delete(deleteComments);
 router.route('/likes').put(displayLikes);
 router.route('/likes').post(adjustLikes);

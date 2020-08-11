@@ -7,6 +7,8 @@ const Discussion = () => {
     const [showPostForm, setShowPostForm] = useState(false);
     const [posts, setPosts] = useState([]);
     const [fetchedUsername, setFetchedUsername] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+
     localStorage.removeItem("map_location");
 
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
@@ -28,6 +30,7 @@ const Discussion = () => {
         .then((res) => res.json())
         .then((obj) => {
           setFetchedUsername(obj.username);
+          setIsAdmin(obj.isAdmin);
           return obj.fetchedComments;
         })
         .then((data) => {
@@ -134,8 +137,8 @@ const Discussion = () => {
                             (
                                 !post.replyingToID &&
                                 <React.Fragment>
-                                        <Post fetchedUsername={fetchedUsername} post={post} key={post._id} addPost={addPost} posts={posts} setPosts={setPosts} />
-                                        <Reply fetchedUsername={fetchedUsername} posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post._id} replies={post.replies}/>
+                                        <Post isAdmin={isAdmin} fetchedUsername={fetchedUsername} post={post} key={post._id} addPost={addPost} posts={posts} setPosts={setPosts} />
+                                        <Reply isAdmin={isAdmin} fetchedUsername={fetchedUsername} posts={posts} setPosts={setPosts} addPost={addPost} parentUsernameId={post._id} replies={post.replies}/>
                                 </React.Fragment>
                             )
                         )
