@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import Form from "react-bootstrap/Form";
 
 const EditDelete = (props) =>{
-
     const [changeContent, setChangeContent] = useState("");
     //used to display edit form when user clicks edit button
     const [editClick, setEditClick] = useState(false);
@@ -41,11 +40,10 @@ const EditDelete = (props) =>{
     //     })
     // };
 
+
     //if delete button is clicked
     const onDeleteClick = (event) => {
         event.preventDefault();
-
-        console.log('hello');
 
         fetch(`${domain}/api/reports`, {
             method: "DELETE",
@@ -58,15 +56,18 @@ const EditDelete = (props) =>{
             })
           })
             .then((res) => {
-                console.log(res);
 
                 fetch(`${domain}/api/reports`, {
-                    method: "GET",
+                    method: "PUT",
                     headers: {
                       "content-type": "application/json",
-                    }
+                    },
+                    body: JSON.stringify({
+                        usernameToken
+                    })
                   })
                     .then((res) => res.json())
+                    .then((obj) => obj.fetchedComments)
                     .then((data) => {
                       data.forEach((comment) => {
                         comment.replies.forEach((reply, index) => {
@@ -122,23 +123,25 @@ const EditDelete = (props) =>{
         })
 
     return(
+        
         <React.Fragment>
-            <div className="edit-button">
-                <span  onClick={() => {
-                    setEditClick(!editClick);
-                    setChangeContent(props.postContent);
-                    }} >
-                        <i class="far fa-edit" style={{marginRight: "5px"}}></i>
-                        Edit
-                </span>
-            </div>
-            <div className="delete-button">
-                <i class="far fa-trash-alt" style={{marginRight: "5px"}}></i>
-                <span onClick={onDeleteClick}>Delete</span>
-            </div>
-            <div>
-                {editClick && editing}
-            </div>
+                <div className="edit-button">
+                    <span  onClick={() => {
+                        setEditClick(!editClick);
+                        setChangeContent(props.postContent);
+                        }} >
+                            <i class="far fa-edit" style={{marginRight: "5px"}}></i>
+                            Edit
+                    </span>
+                </div>
+                <div className="delete-button">
+                    <i class="far fa-trash-alt" style={{marginRight: "5px"}}></i>
+                    <span onClick={onDeleteClick}>Delete</span>
+                </div>
+                <div>
+                    {editClick && editing}
+                </div>
+            
         </React.Fragment>
     )
 }

@@ -24,7 +24,7 @@ const Account = (props) => {
             .then((res) => res.json())
             .then((data) => {
               console.log(data);
-              setPins(data);
+              setPins(data.pins);
             })
     }, []);
 
