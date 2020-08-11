@@ -104,7 +104,7 @@ const Login = (props) => {
               <center>{passwordError}</center>
             </div>
             <br></br>
-            <Button className="btn-lg btn-dark btn-block" type="submit">
+            <Button style={{boxShadow: "2px 2px 0px #c9ad84" }} className="btn-lg btn-dark btn-block" type="submit">
               Log In
             </Button>
             <div style={{ color: "red" }}>

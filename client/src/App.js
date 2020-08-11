@@ -38,11 +38,6 @@ const App = (props) => {
             <div className="row no-gutters">
               <div className="col">
                 <div className="leftside">
-                  <Navbar.Brand className="brand-nav">
-                    <h2>
-                      <b>Pin &amp; Protest</b>
-                    </h2>
-                  </Navbar.Brand>
                   <h3 className="app-info">
                     <p>
                       Pin a{" "}
@@ -65,7 +60,9 @@ const App = (props) => {
                       </span>
                       .
                     </p>
-                    <p>Pin &amp; Protest.</p>
+                    <Navbar.Brand className="brand-nav">
+                     <img class="logo" src="logo.png"></img>
+                    </Navbar.Brand>
                   </h3>
                 </div>
               </div>
