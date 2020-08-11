@@ -38,7 +38,6 @@ exports.saveComments = async (req, res) => {
   const token = req.body.usernameToken;
   const post = req.body.post;
   const replyingToID = req.body.replyingToID;
-  const numberOfLikes = req.body.likes;
 
   const decodedToken = jwt.decode(token, jwtKey);
 
@@ -49,7 +48,6 @@ exports.saveComments = async (req, res) => {
     username: decodedToken.username,
     content: post,
     replyingToID,
-    likes: numberOfLikes
   })
 
   const commentID = comment._id;

@@ -11,7 +11,6 @@ const {
   deleteComments,
   displayAccount,
   sendId,
-  updateLikes
 } = require("../controllers/accountController");
 
 router.route('/register').post(register);
