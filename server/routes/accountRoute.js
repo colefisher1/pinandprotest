@@ -12,7 +12,7 @@ const {
   displayLikes,
   adjustLikes,
   displayAccount,
-  sendId
+  sendId,
 } = require("../controllers/accountController");
 
 router.route('/register').post(register);

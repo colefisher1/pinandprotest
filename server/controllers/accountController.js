@@ -47,7 +47,7 @@ exports.saveComments = async (req, res) => {
     user: decodedToken._id,
     username: decodedToken.username,
     content: post,
-    replyingToID
+    replyingToID,
   })
 
   const commentID = comment._id;

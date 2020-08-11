@@ -121,10 +121,10 @@ const Post = (props) => {
         // }
     }
 
-    //gets the current date
-    var d = Date(Date.now());
+    //gets the date comment was posted
+    var d = new Date(props.post.date);
     let a = d.toString();
-    
+
     return (
         <div>
             <Card className="comment-container">
@@ -157,7 +157,7 @@ const Post = (props) => {
                     <div className="like-button">
                         <span onClick={onLikeClicked} style={{color: likeClick && 'black'}}>
                         <i class="far fa-thumbs-up" style={{marginRight: "5px"}}></i>
-                            Like  {likes !== 0 && likes}
+                            Like {likes !== 0 && likes}
                         </span>
                     </div>
                     <div className="dislike-button">
