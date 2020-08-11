@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Guidelines from "./Guidelines";
+import { ShepherdTour, ShepherdTourContext } from 'react-shepherd'
+import {steps} from "./tourSteps"
+import 'shepherd.js/dist/css/shepherd.css';
 
 const Account = (props) => {
   localStorage.removeItem("map_location");
@@ -13,6 +16,8 @@ const Account = (props) => {
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
     const createHistory = require("history").createBrowserHistory;
     const token = localStorage.getItem("token");
+    //const tour = useContext(ShepherdTourContext);
+    //console.log("estoy aqui"+steps.id);
     console.log(token);
     useEffect(() => {
         fetch(`${domain}/api/account`, {
