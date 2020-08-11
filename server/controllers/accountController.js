@@ -162,6 +162,230 @@ exports.deleteComments = async (req, res) => {
 
 }
 
+exports.displayLikes = async (req, res) => {
+  const id = req.body.id;
+  Comment.findOne({_id: id}, (err, comment) => {
+    if(err) throw err;
+
+    if(comment !== null) {
+      res.send({
+        likesNum: comment.likes.length,
+        dislikesNum: comment.dislikes.length
+      })
+    }
+      
+  });
+}
+
+exports.adjustLikes = async (req, res) => {
+  const userID = jwt.decode(req.body.usernameToken, jwtKey)._id;
+  const commentUser = req.body.username;
+  const id = req.body.id;
+  const like = req.body.like;
+
+  Comment.findOne({_id: id}, (err, comment) => {
+    if (err) throw err;
+    console.log('id',id);
+    console.log('couscous', comment);
+
+    let contains = false;
+    let likesNum = 0;
+    let dislikesNum = 0;
+
+    if(like) {
+      
+      
+      comment.likes.forEach((reference) => {
+        console.log('userID',userID);
+        console.log('reference',reference);
+        if(reference == userID) contains = true;
+      });
+
+      console.log(contains);
+
+      if(contains) {
+        Comment.findOneAndUpdate({_id: id}, {$pull: {likes: userID}}, (error, doc, resss) => {
+          if(error) throw error;
+
+          likesNum = doc.likes.length - 1;
+          dislikesNum = doc.dislikes.length;
+
+          contains = false; 
+
+          comment.dislikes.forEach((reference) => {
+            if(reference == userID) contains = true;
+          });
+
+          if(contains) {
+            Comment.findOneAndUpdate({_id: id}, {$pull: {dislikes: userID}}, (error, doc, resss) => {
+              if(error) throw error;
+
+              likesNum = doc.likes.length;
+              dislikesNum = doc.dislikes.length - 1;
+
+              res.send({
+                likesNum,
+                dislikesNum
+              });
+            });
+          } else {
+            console.log('likesNum', likesNum);
+            console.log('dislikesNum', dislikesNum);
+
+            res.send({
+              likesNum,
+              dislikesNum
+            });
+          }
+        });
+      } else {
+        Comment.findOneAndUpdate({_id: id}, {$push: {likes: [userID]}}, (error, doc, resss) => {
+          if(error) throw error;
+
+          console.log('whatsup doc', doc);
+
+          likesNum = doc.likes.length + 1;
+          dislikesNum = doc.dislikes.length;
+
+          contains = false; 
+
+          comment.dislikes.forEach((reference) => {
+            if(reference == userID) contains = true;
+          });
+
+          if(contains) {
+            Comment.findOneAndUpdate({_id: id}, {$pull: {dislikes: userID}}, (error, doc, resss) => {
+              if(error) throw error;
+
+              likesNum = doc.likes.length;
+              dislikesNum = doc.dislikes.length - 1;
+
+              res.send({
+                likesNum,
+                dislikesNum
+              });
+            });
+          } else {
+            console.log('likesNum', likesNum);
+            console.log('dislikesNum', dislikesNum);
+
+            res.send({
+              likesNum,
+              dislikesNum
+            });
+          }
+        });
+      }
+
+      
+
+      // if(!likeClick) {
+      //   setLikeClick(true);
+      //   setLikes(likes + 1);
+    
+      //   if(dislikeClick) {
+      //       setDislikeClick(false);
+      //       setDislikes(dislikes - 1);
+      //   }
+      // }
+      // else {
+      //     setLikeClick(false);
+      //     setLikes(likes - 1);
+      // }
+
+    }
+    else {
+      comment.dislikes.forEach((reference) => {
+        if(reference == userID) contains = true;
+      });
+
+      if(contains) {
+        Comment.findOneAndUpdate({_id: id}, {$pull: {dislikes: userID}}, (error, doc, resss) => {
+          if(error) throw error;
+
+          likesNum = doc.likes.length;
+          dislikesNum = doc.dislikes.length - 1;
+
+          contains = false; 
+
+          comment.likes.forEach((reference) => {
+            if(reference == userID) contains = true;
+          });
+
+          if(contains) {
+            Comment.findOneAndUpdate({_id: id}, {$pull: {likes: userID}}, (error, doc, resss) => {
+              if(error) throw error;
+
+              likesNum = doc.likes.length - 1;
+              dislikesNum = doc.dislikes.length;
+
+              res.send({
+                likesNum,
+                dislikesNum
+              });
+            });
+          }
+          else {
+            res.send({
+              likesNum,
+              dislikesNum
+            });
+          }
+        });
+      } else {
+        Comment.findOneAndUpdate({_id: id}, {$push: {dislikes: [userID]}}, (error, doc, resss) => {
+          if(error) throw error;
+
+          likesNum = doc.likes.length;
+          dislikesNum = doc.dislikes.length + 1;
+
+          contains = false; 
+
+          comment.likes.forEach((reference) => {
+            if(reference == userID) contains = true;
+          });
+
+          if(contains) {
+            Comment.findOneAndUpdate({_id: id}, {$pull: {likes: userID}}, (error, doc, resss) => {
+              if(error) throw error;
+
+              likesNum = doc.likes.length - 1;
+              dislikesNum = doc.dislikes.length;
+
+              res.send({
+                likesNum,
+                dislikesNum
+              });
+            });
+          }
+          else {
+            res.send({
+              likesNum,
+              dislikesNum
+            });
+          }
+        });
+      }
+
+      
+      // if(!dislikeClick) {
+      //   setDislikeClick(true);
+      //   setDislikes(dislikes + 1);
+
+      //   if(likeClick) {
+      //     setLikeClick(false);
+      //     setLikes(likes - 1);
+      //   }
+      // }
+      // else {
+      //   setDislikeClick(false);
+      //   setDislikes(dislikes - 1);
+      // }
+    }
+  });
+
+}
+
 exports.createProtest = async (req, res) => {
   try {
     const decoded = jwt.decode(req.body.token);

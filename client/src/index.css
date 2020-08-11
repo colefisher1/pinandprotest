@@ -378,4 +378,28 @@ body {
     
   }
 
- 
+  .bottom-right {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    color: grey;
+    border: none;
+    background: none;
+  }
+
+  .bottom-right:hover {
+    cursor: pointer;
+    color: black;
+  }
+
+  .account-div {
+    border: 8px solid #bcdbe5;
+    border-radius: 25px;
+    min-height: 150px; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    width: 90%;
+    max-width: 1000px;
+    position: relative;
+  }

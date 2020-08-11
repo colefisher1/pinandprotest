@@ -4,6 +4,7 @@ import Guidelines from "./Guidelines";
 const Account = (props) => {
   localStorage.removeItem("map_location");
     const [pins, setPins] = useState([]);
+    const [comments, setComments] = useState([]);
     const usernameToken = localStorage.getItem("token");
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
@@ -27,6 +28,7 @@ const Account = (props) => {
             .then((data) => {
               console.log(data);
               setPins(data.pins);
+              setComments(data.comments);
             })
     }, []);
 
@@ -41,7 +43,7 @@ const Account = (props) => {
       .then((res) => res.json())
       .then((data) => data.username)
       .then( (username) => {
-              setCurrentUsername(username);
+            setCurrentUsername(username);
           }
       );
     
@@ -54,62 +56,73 @@ const Account = (props) => {
       window.location.href = pathUrl;
     }
 
+    var pinsArr;
     console.log(pins);
     if (pins && pins.length > 0) {
-      const pinsArr = pins.filter((obj) => obj).map(pin => 
-          <div class="row mx-auto newsarticle" onClick={(e) => goToPin(pin.coordinates)}>
+      pinsArr = pins.filter((obj) => obj).map(pin => 
+        <div class="row mx-auto account-div">
+            <div class="col my-auto">
+                <h3>{pin.address === "" ? "Address Not Found" : pin.address}</h3>
+                <p>
+                  <b>Info: </b>{`${pin.protestInfo === "" ? "None" : pin.protestInfo}`}<br/>
+                  <b>Peaceful: </b>{`${pin.isViolent === true ? "No" : "Yes"}`} <br/>
+                  <b>Latitude: </b>{pin.coordinates.lat} <br/>
+                  <b>Longitude: </b>{pin.coordinates.long}
+                </p> 
+            </div>
+            <div class="col-4">
+              <button type="button" class="bottom-right" style={{marginLeft: "5px"}} onClick={(e) => goToPin(pin.coordinates)}>
+                View in Map <i class="fas fa-map-marked-alt"></i>
+              </button>
+            </div>
+          
+            
+        </div>
+      );
+    }
+    
+    console.log(currentUsername);
+    var commentArr;
+    if (comments && comments.length > 0) {
+      commentArr = comments.filter((obj) => obj).map(comment =>
+      <div class="row mx-auto account-div">
               <div class="col my-auto">
-                  <h3>{pin.address === "" ? "Address Not Found" : pin.address}</h3>
+                  <h3>{comment.content}</h3>
                   <p>
-                    <b>Info: </b>{`${pin.protestInfo === "" ? "None" : pin.protestInfo}`}<br/>
-                    <b>Peaceful: </b>{`${pin.isViolent === true ? "No" : "Yes"}`} <br/>
-                    <b>Latitude: </b>{pin.coordinates.lat} <br/>
-                    <b>Longitude: </b>{pin.coordinates.long}
+                    <b>Date: </b>{comment.date.replace(/T(.*)/g, '')}<br/>
+                    <b>Likes: </b>{comment.likes}<br/>
+                    <b>Dislikes: </b>{comment.dislikes}<br/>
                   </p> 
               </div>
           </div>
       );
-      
-      return (
-          <div>
-              <div class="spacer"></div>
-              <div class="spacer"></div>
-      <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s account page</h2></div>
-              <div class="row">
-                <div className="col acct_col">
-                    <h3 class="acct_heading protestlabel protest-history">Protest History</h3>
-                    <div>{pinsArr}</div>
-                </div>
-                
-                <div class="col acct_col">
-                    <div><h3 class="acct_heading protestlabel comment-history">Comment History</h3></div> 
-                </div>
-                
-              </div>
-              <span class="guidelines-button" variant="primary" onClick={handleShow}>
-                Read Guidelines
-              </span>
-              <Guidelines show={show} setShow={setShow}/>
+    }
+    
+    return (
+        <div>
+          <div class="spacer"></div>
+          <div class="spacer"></div>
+          <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s Account</h2></div>
+
+          <div class="row mx-auto">
+            <button className= "mx-auto submit-protest" onClick={handleShow}>Read Website Guidelines</button>
           </div>
-      );
-  }
-  else {
-      return (
-          <div>
-            <div class="row"><h2 class="mx-auto protestlabel">Account</h2></div>
-              <div class="row">
-                <div class="col acct_col">
-                    <h3 class="acct_heading protestlabel">Protest History</h3>
-                </div>
-                
-                <div class="col acct_col">
-                    <div><h3 class="acct_heading protestlabel">Comment History</h3></div> 
-                </div>
-                
-              </div>
+          <div class="row">
+            <div class="col acct_col">
+                <h3 class="acct_heading protestlabel">Protest History</h3>
+                <div>{pinsArr}</div>
+            </div>
+            
+            <div class="col acct_col">
+                <div><h3 class="acct_heading protestlabel">Comment History</h3></div> 
+                <div>{commentArr}</div>
+            </div>
+            
           </div>
-      );
-  }
+          
+          <Guidelines show={show} setShow={setShow}/>
+        </div>
+    );
 }
 
 export default Account;
