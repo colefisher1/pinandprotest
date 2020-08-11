@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Guidelines from "./Guidelines";
+import { ShepherdTour, ShepherdTourContext } from 'react-shepherd'
+import {steps} from "./tourSteps"
+import 'shepherd.js/dist/css/shepherd.css';
 
 const Account = (props) => {
   localStorage.removeItem("map_location");
@@ -12,6 +15,8 @@ const Account = (props) => {
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
     const createHistory = require("history").createBrowserHistory;
     const token = localStorage.getItem("token");
+    //const tour = useContext(ShepherdTourContext);
+    //console.log("estoy aqui"+steps.id);
     console.log(token);
     useEffect(() => {
         fetch(`${domain}/api/account`, {
@@ -67,20 +72,20 @@ const Account = (props) => {
               </div>
           </div>
       );
-
+      
       return (
           <div>
               <div class="spacer"></div>
               <div class="spacer"></div>
       <div class="row"><h2 class="mx-auto protestlabel">{currentUsername}'s account page</h2></div>
               <div class="row">
-                <div class="col acct_col">
-                    <h3 class="acct_heading protestlabel">Protest History</h3>
+                <div className="col acct_col">
+                    <h3 class="acct_heading protestlabel protest-history">Protest History</h3>
                     <div>{pinsArr}</div>
                 </div>
                 
                 <div class="col acct_col">
-                    <div><h3 class="acct_heading protestlabel">Comment History</h3></div> 
+                    <div><h3 class="acct_heading protestlabel comment-history">Comment History</h3></div> 
                 </div>
                 
               </div>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import TimeAgo from "react-time-ago";
 import EditDelete from "./EditDelete";
 import Card from "react-bootstrap/Card";
@@ -16,6 +16,27 @@ const Post = (props) => {
     let replyingTo = props.post._id;
 
     const domain = `${window.location.origin === "http://localhost:3000" ? "http://localhost:5000" : window.location.origin}`;
+    const usernameToken = localStorage.getItem('token');
+
+    useEffect(() => {
+
+        fetch(`${domain}/api/likes`, {
+            method: "PUT",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              id: props.post._id
+            })
+          })
+            .then((res) => res.json())
+            .then((data) => {
+                setLikes(data.likesNum);
+                setDislikes(data.dislikesNum);
+            });
+
+    }, []);
+
 
     function submitPost(event) {
         event.preventDefault();
@@ -30,42 +51,79 @@ const Post = (props) => {
 
     //if like button is clicked
     const onLikeClicked = () => {
-        if(!likeClick) {
-            setLikeClick(true);
-            setLikes(likes + 1);
+        fetch(`${domain}/api/likes`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              usernameToken,
+              username: props.post.username,
+              id: props.post._id,
+              like: true
+            })
+          })
+            .then((res) => res.json())
+            .then((data) => {
+                setLikes(data.likesNum);
+                setDislikes(data.dislikesNum);
+            });
 
-            if(dislikeClick) {
-                setDislikeClick(false);
-                setDislikes(dislikes - 1);
-            }
-        }
-        else {
-            setLikeClick(false);
-            setLikes(likes - 1);
-        }
+
+        // if(!likeClick) {
+        //     setLikeClick(true);
+        //     setLikes(likes + 1);
+
+        //     if(dislikeClick) {
+        //         setDislikeClick(false);
+        //         setDislikes(dislikes - 1);
+        //     }
+        // }
+        // else {
+        //     setLikeClick(false);
+        //     setLikes(likes - 1);
+        // }
     }
 
     //if dislike button is clicked
     const onDislikeClicked = () => {
-        if(!dislikeClick) {
-            setDislikeClick(true);
-            setDislikes(dislikes + 1);
+        fetch(`${domain}/api/likes`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              usernameToken,
+              username: props.post.username,
+              id: props.post._id,
+              like: false
+            })
+          })
+            .then((res) => res.json())
+            .then((data) => {
+                setLikes(data.likesNum);
+                setDislikes(data.dislikesNum);
+            });
 
-            if(likeClick) {
-                setLikeClick(false);
-                setLikes(likes - 1);
-            }
-        }
-        else {
-            setDislikeClick(false);
-            setDislikes(dislikes - 1);
-        }
+        // if(!dislikeClick) {
+        //     setDislikeClick(true);
+        //     setDislikes(dislikes + 1);
+
+        //     if(likeClick) {
+        //         setLikeClick(false);
+        //         setLikes(likes - 1);
+        //     }
+        // }
+        // else {
+        //     setDislikeClick(false);
+        //     setDislikes(dislikes - 1);
+        // }
     }
 
-    //gets the current date
-    var d = Date(Date.now());
+    //gets the date comment was posted
+    var d = new Date(props.post.date);
     let a = d.toString();
-    
+
     return (
         <div>
             <Card className="comment-container">
@@ -98,7 +156,7 @@ const Post = (props) => {
                     <div className="like-button">
                         <span onClick={onLikeClicked} style={{color: likeClick && 'black'}}>
                         <i class="far fa-thumbs-up" style={{marginRight: "5px"}}></i>
-                            Like  {likes !== 0 && likes}
+                            Like {likes !== 0 && likes}
                         </span>
                     </div>
                     <div className="dislike-button">
@@ -110,7 +168,7 @@ const Post = (props) => {
                 
                     {/*this functionality (editing and deleting posts) should only be available to the comments created by the current user */}
                     {(props.fetchedUsername == props.post.username || props.isAdmin) &&
-                        <EditDelete fetchedUsername={props.fetchedUsername} displayedUsername={props.post.username} posts={props.posts} content={props.post.content} postId={props.post._id} setPosts={props.setPosts} addPost={props.addPost}/>
+                        <EditDelete fetchedUsername={props.fetchedUsername} displayedUsername={props.post.username} post={props.post} posts={props.posts} content={props.post.content} postId={props.post._id} setPosts={props.setPosts} addPost={props.addPost}/>
                     }
                 </div>
             </Card>

@@ -38,7 +38,6 @@ const App = (props) => {
             <div className="row no-gutters">
               <div className="col">
                 <div className="leftside">
-                  
                   <h3 className="app-info">
                     <p>
                       Pin a{" "}
