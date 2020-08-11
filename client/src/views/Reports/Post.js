@@ -30,6 +30,7 @@ const Post = (props) => {
 
     //if like button is clicked
     const onLikeClicked = () => {
+        
         if(!likeClick) {
             setLikeClick(true);
             setLikes(likes + 1);
@@ -53,7 +54,7 @@ const Post = (props) => {
 
             if(likeClick) {
                 setLikeClick(false);
-                setLikes(likes - 1);
+               setLikes(likes - 1);
             }
         }
         else {
@@ -98,7 +99,7 @@ const Post = (props) => {
                     <div className="like-button">
                         <span onClick={onLikeClicked} style={{color: likeClick && 'black'}}>
                         <i class="far fa-thumbs-up" style={{marginRight: "5px"}}></i>
-                            Like  {likes !== 0 && likes}
+                            Like {likes !== 0 && likes}
                         </span>
                     </div>
                     <div className="dislike-button">
