@@ -1,11 +1,35 @@
-## _**PLEASE READ THIS TO COMPLETION BEFORE ASKING ANY QUESTIONS!**_
+# Protest-Tracker
+Protest-Tracker is an app designed to improve your awareness of local protests by providing access to reported protest information via map and interactive user-based discussions, as well as recent news specific to your state. 
 
-### _**IMPORTANT NOTES**_ - 
-This project does not have a mongoDB connection setup. Setup the connection based on the environments below.
-- local development: create a config file (make sure to name it config.js) in the config folder, which exports your db.uri connection. An example is provided, config/config.example.js. This file will be ignored by git so your db credentials will be kept safe when the app is deployed.
-- production: Since the config file is not pushed when you deploy your app, you must specifiy your db uri in heorku. Set the uri in heroku as specified in [this](https://devcenter.heroku.com/articles/config-vars) resource. Make sure you name the environement variable "DB_URI".
+## Installation 
+* Clone the repository
+* In the project's root directory, run `npm install`
+* Run the web app with`npm start` 
 
-This project contains an example project board meant to showcase how one can be used. The issues posted to it are not real issues.
+For every pull of the remote repository, please use `npm install` in the root folder. This will install all the app dependencies needed.
+
+To correctly interact with the database, go through the following steps:
+1) Go to the src folder and create the file "mongoURI.js"
+2) Inside of that file, type in the following: 
+		`module.exports = 'mongodb+srv://<username>:<password>@cluster0.tyahz.mongodb.net/<database-name>?retryWrites=true&w=majority';` Where `<username>` and `password` are specific to the account you created in the "Database Access" tab. `<database-name>` is the database you are working with. By default, it is 'protest-tracker' and will have to be modified depend on which database container you are using.
+NOTE: the mongoURI.js file has been purposefully excluded on gitignore to avoid others access to your password.
+
+## Testing
+Information on test scripts(if implemented)
+
+## Technologies
+Project is created with:
+* MongoDB version: 4.2.7
+* Express version: 4.17.1
+* React version: 16.13.1
+* Node version: 14.3.0
+* Leaflet version: 1.6.0
+	
+## Contributing
+In order for your work to be merged, your Pull Request must:
+* Be reviewed and approved by the Project Manager, as well as 1 team member working on the same tech stack (Frontend/Backend)
+
+
 
 ## Getting Started
 This repository aims to assist you in beginning work on a MERN stack application for heroku deployment with a solid file structure as a foundation. To get started make a copy of this template repo for your project teams by clicking the green "Use this template" button above.
@@ -42,33 +66,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 If deploying to heroku this does not need to be run since it is handled by the heroku-postbuild script<br>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-
-## File structure
-#### `client` - Holds the client application
-- #### `public` - This holds all of our static files
-- #### `src`
-    - #### `assets` - This folder holds assets such as images, docs, and fonts
-    - #### `components` - This folder holds all of the different components that will make up our views
-    - #### `views` - These represent a unique page on the website i.e. Home or About. These are still normal react components
-    - #### `App.js` - This is what renders all of our browser routes and different views
-    - #### `index.js` - This is what renders the react app by rendering App.js, should not change
-- #### `package.json` - Defines npm behaviors and packages for the client
-#### `server` - Holds the server application
-- #### `config` - This holds our configuration files, like mongoDB uri
-- #### `controllers` - These hold all of the callback functions that each route will call
-- #### `models` - This holds all of our data models
-- #### `routes` - This holds all of our HTTP to URL path associations for each unique url
-- #### `tests` - This holds all of our server tests that we have defined
-- #### `server.js` - Defines npm behaviors and packages for the client
-#### `package.json` - Defines npm behaviors like the scripts defined in the next section of the README
-#### `.gitignore` - Tells git which files to ignore
-#### `README` - This file!
-
-## Learn More
-To learn how to setup a local MongoDB instance for testing, check out how to [connect to MongoDB](https://docs.mongodb.com/guides/server/drivers/).
-
-To learn how to deploy a full-stack web app to heroku, check out [this great guide](https://daveceddia.com/deploy-react-express-app-heroku/).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
