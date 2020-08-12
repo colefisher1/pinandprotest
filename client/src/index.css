@@ -399,7 +399,7 @@ body {
     min-height: 150px; 
     margin-top: 10px;
     margin-bottom: 10px;
-    display: table;
+    display: flex;
     width: 90%;
     max-width: 1000px;
     position: relative;
