@@ -3,11 +3,11 @@ import React, {useState, useEffect} from "react";
 const News = () => {
     const [articles, setArticles] = useState([]);
     localStorage.removeItem("map_location");
-
     //Fetches data from News API after the page is rendered
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/"
     useEffect(() => {
         //Currently fetching top-headlines in english with the keyword protest
-        fetch('http://newsapi.org/v2/top-headlines?q=protest&language=en&apiKey=cfd93ac9295b4ee88d834e9034b6dc9d')
+        fetch(`${proxyUrl}https://gnews.io/api/v2/?q=protest&token=8d4de90a0c4ae440463b46186441f013`)
         .then(response => {
             return response.json();
         })
@@ -27,13 +27,12 @@ const News = () => {
     //If articles have been fetched, display them; Otherwise, return an empty div
     if (articles && articles.length > 0) {
         const articlesArr = articles.map(article => 
-            <div class="row mx-auto newsarticle"  onClick={(event) => {event.preventDefault(); window.open(`${article.url}`);}}>
-                <div class="d-none d-lg-block col-sm-2 my-auto">
-                    <img class="articleimage" src={article.urlToImage} />
-                </div>
+            <div class="row mx-auto newsarticle"  onClick={(event) => {event.preventDefault(); window.open(`${article.website}`);}}>
                 <div class="col my-auto">
+                    <div class="spacer"></div>
+                    <div class="spacer"></div>
                     <h4>{article.title}</h4>
-                    <h2 class="author_date">{article.source.name} - {article.publishedAt.replace(/T(.*)/g, '')}</h2>
+                    <h2 class="author_date">{article.source} - {article.date}</h2>
                     <p class="description">{article.description}</p>
                 </div>
             </div>
