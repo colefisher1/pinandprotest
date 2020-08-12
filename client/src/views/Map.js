@@ -19,7 +19,8 @@ const ProtestMap = (props) => {
   const [creatingProtest, setCreatingProtest] = useState(null);
   const [filters, setFilters] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
-  
+
+  console.log('afsmdfposmdf',isAdmin);
   
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);

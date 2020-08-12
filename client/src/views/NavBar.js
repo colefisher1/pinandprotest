@@ -16,7 +16,7 @@ export const NavigationBar = () => (
     <Nav className="ml-auto navbar-nav">
         <Nav.Link href="/map" exact component={Map} >Map</Nav.Link>
         <Nav.Link href="/news">News</Nav.Link> 
-        <Nav.Link href="/reports">Reports</Nav.Link>
+        <Nav.Link href="/reports">Forum</Nav.Link>
         <Nav.Link href="/account">Account</Nav.Link>
         <Nav.Link href="/logout">Logout</Nav.Link>
     </Nav>

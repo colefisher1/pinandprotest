@@ -11,7 +11,6 @@ import { Navbar } from "react-bootstrap";
 //Import page components
 import Login from "./views/Login";
 import Register from "./views/Register";
-import ForgotPassword from "./views/ForgotPassword";
 import HomePage from "./views/Home/HomePage";
 
 
@@ -89,7 +88,6 @@ const App = (props) => {
                     )}
                   />
                   <Route path="/register" component={Register} />
-                  <Route path="/forgot-password" component={ForgotPassword} />
                 </div>
               </div>
             </div>

@@ -116,8 +116,6 @@ const Login = (props) => {
         </Form>
         <div className="text-center">
           <a href="/register">Register</a>
-          <span className="p-2">|</span>
-          <a href="/forgot-password">Forgot Password?</a>
         </div>
       </div>
     </div>
