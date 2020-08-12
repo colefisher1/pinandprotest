@@ -46,6 +46,14 @@ body {
   }
   
   /*Columns in Login, Register, ForgotPassword Pages*/
+  .btn-dark:hover {
+    background-color: #23272b !important;
+  }
+
+  .btn-dark {
+    background-color: #343a40 !important;
+  }
+
   .leftside{
     height: 100vh;
     position: relative;
