@@ -346,6 +346,14 @@ body {
   }
 
   /* ----- Account Page ----- */
+  .btn-primary {
+    background-color: #007bff !important;
+  }
+
+  .btn-primary:hover {
+    background-color: #0569d4 !important;
+  }
+
   .acct_heading {
     text-align: center;
   }
