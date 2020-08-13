@@ -153,7 +153,7 @@ const ProtestMap = (props) => {
     setAddProtestBox(true);
     
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-    fetch(`${proxyUrl}${process.env.GEOCODE_KEY || require('../config').map.geocode}${e.latlng.lat},${e.latlng.lng}`)
+    fetch(`${proxyUrl}${process.env.GEOCODE_KEY || require('./clientconfig').map.geocode}${e.latlng.lat},${e.latlng.lng}`)
       .then(response => {
           return response.json();
       })
