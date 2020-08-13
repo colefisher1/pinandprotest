@@ -7,7 +7,7 @@ const News = () => {
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"
     useEffect(() => {
         //Currently fetching top-headlines in english with the keyword protest
-        fetch(`${proxyUrl}https://gnews.io/api/v2/?q=protest&token=8d4de90a0c4ae440463b46186441f013`)
+        fetch(`${proxyUrl}${process.env.NEWS_KEY || require('../config').news}`)
         .then(response => {
             return response.json();
         })
