@@ -153,8 +153,7 @@ const ProtestMap = (props) => {
     setAddProtestBox(true);
     
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-    fetch(`${proxyUrl}http://open.mapquestapi.com/geocoding/v1/reverse?key=p3ngfpqJsUmii1sppAGgAAe9YgCdqoHY
-    &location=${e.latlng.lat},${e.latlng.lng}`)
+    fetch(`${proxyUrl}${process.env.GEOCODE_KEY || require('../config').map.geocode}${e.latlng.lat},${e.latlng.lng}`)
       .then(response => {
           return response.json();
       })
