@@ -7,10 +7,18 @@ Pin & Protest is a web application built in the MERN stack designed to improve y
 * Run the web app locally with`npm run-script dev` 
 
 To correctly interact with the database, go through the following steps:
-1) Go to the src folder and create the file "mongoURI.js"
+
+1) Go to server/config/ and create the file "config.js"
 2) Inside of that file, type in the following: 
-		`module.exports = 'mongodb+srv://<username>:<password>@cluster0.tyahz.mongodb.net/<database-name>?retryWrites=true&w=majority';` Where `<username>` and `password` are specific to the account you created in the "Database Access" tab. `<database-name>` is the database you are working with. By default, it is 'protest-tracker' and will have to be modified depend on which database container you are using.
-NOTE: the mongoURI.js file has been purposefully excluded on gitignore to avoid others access to your password.
+	```
+	module.exports = {
+	    db: {
+		uri: 'mongodb+srv://<username>:password@cluster0.tyahz.mongodb.net/<database-name>?retryWrites=true&w=majority', //place the URI of your mongo database here.
+	    }
+	};
+	``` 
+You will have to create a new MongoDB database. The uri's `<username>` and `password` are specific to the account you created in the "Database Access" tab. `<database-name>` is the database you are working with.
+NOTE: the config.js file has been purposefully excluded on gitignore to avoid others access to your password.
 
 ## Available Scripts
 
